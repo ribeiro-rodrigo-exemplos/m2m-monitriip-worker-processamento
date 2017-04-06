@@ -1,0 +1,19 @@
+[
+    {
+      "idJornada":"${body[idJornada]}",
+      "placaVeiculo":"${body[placaVeiculo]}"
+    },
+    {
+      "$set":{
+        "dataFinal":"${body[dataHoraEvento]}",
+        "coordenadasFim":{
+            "type":"POINT",
+            "coordinates":[
+                ${body[latitude]},
+                ${body[longitude]}
+            ]
+        }
+      }
+    }
+]
+

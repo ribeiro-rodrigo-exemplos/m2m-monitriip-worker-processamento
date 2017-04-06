@@ -1,0 +1,14 @@
+{
+  "idLog":5,
+  "idJornada":"AAAA-JJJ",
+  "idCliente":12,
+  "tipoRegistroEvento":1,
+  "cpfMotorista":"121613",
+  "placaVeiculo":"CCCA",
+  "latitude":-22.906847,
+  "longitude":-43.172896,
+  "dataHoraEvento":"2017-04-01 02:00:00",
+  "imei":"1111",
+  "pdop":444,
+  "cnpjCliente":"2222"
+}

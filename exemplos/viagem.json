@@ -1,0 +1,17 @@
+{
+  "idLog":7,
+  "idViagem":"VAA",
+  "idJornada":"AAAA-JJJ",
+  "idTransbordo":"uiiu",
+  "tipoRegistroViagem":1,
+  "codigoTipoViagem":0,
+  "codigoSentidoLinha":1,
+  "idCliente":12,
+  "placaVeiculo":"CCCA",
+  "identificacaoLinha":"625",
+  "latitude":-22.906847,
+  "longitude":-43.172896,
+  "dataHoraEvento":"2017-04-01 02:00:00",
+  "dataProgramada":"2017-03-31",
+  "horaProgramada":"13:00:00"
+}

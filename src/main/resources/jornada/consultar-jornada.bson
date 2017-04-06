@@ -1,0 +1,3 @@
+{
+    "idJornada":"${property.payload[idJornada]}"
+}

@@ -1,0 +1,21 @@
+application:
+  name: m2m-monitriip-worker-processamento
+  version: 1.0.0
+
+spring:
+  application:
+    name: ${application.name}
+
+camel:
+  springboot:
+    main-run-controller: true
+
+databases:
+  frota:
+    host: localhost
+    port: 27017
+    database: test
+  monitriip:
+    host: localhost
+    port: 27017
+    database: test
