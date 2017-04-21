@@ -1,0 +1,35 @@
+[
+    {
+        "idViagem":"${body.idViagem}",
+        "idTransbordo":"${body.idTransbordo}"
+    },
+    {
+        "$inc":{
+            "totalBilhetes":1
+        },
+        "$push":{
+            "bilhetes":{
+                "idViagem":"${body.idViagem}",
+                "idTransbordo":"${body.idTransbordo}",
+                "dataHoraEvento":"${body.dataHoraEvento}",
+                "numeroEquipamento":"${body.dataHoraEvento}",
+                "numeroBilheteEmbarque":"${body.numeroEquipamento}",
+                "identificacaoLinha":"${body.identificacaoLinha}",
+                "dataPrevistaViagem":"${body.dataPrevistaViagem}",
+                "horaPrevistaViagem":"${body.horaPrevistaViagem}",
+                "codigoDesconto":"${body.codigoDesconto}",
+                "valorTarifa":${body.valorTarifa},
+                "percentualDesconto":${body.percentualDesconto},
+                "celularPassageiro":"${body.celularPassageiro}",
+                "imei":"${body.imei}",
+                "localizacao":{
+                    "type":"POINT",
+                    "coordinates":[
+                        ${body.latitude},
+                        ${body.longitude}
+                    ]
+                }
+            }
+        }
+    }
+]

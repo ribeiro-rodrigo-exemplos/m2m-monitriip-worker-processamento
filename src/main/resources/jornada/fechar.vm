@@ -1,0 +1,20 @@
+[
+    {
+      "idJornada":"${exchange.properties.payload.idJornada}",
+      "placaVeiculo":"${exchange.properties.payload.placaVeiculo}"
+    },
+    {
+      "$set":{
+        "dataFinal":"${exchange.properties.payload.dataHoraEvento}",
+        "duracao":${exchange.properties.duracao},
+        "coordenadasFim":{
+            "type":"POINT",
+            "coordinates":[
+                ${exchange.properties.payload.latitude},
+                ${exchange.properties.payload.longitude}
+            ]
+        }
+      }
+    }
+]
+

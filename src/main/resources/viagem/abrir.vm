@@ -1,0 +1,29 @@
+{
+    "idViagem":"${exchange.properties.payload.idViagem}",
+    "idTransbordo":"${exchange.properties.payload.idTransbordo}",
+    "identificacaoLinha":"${exchange.properties.payload.identificacaoLinha}",
+    "dataInicial":"${exchange.properties.payload.dataHoraEvento}",
+    "cpfMotorista":"${exchange.properties.cpfMotorista}",
+    "placaVeiculo":"${exchange.properties.payload.placaVeiculo}",
+    "descricaoDaLinha":"${exchange.properties.linha}",
+    "idCliente":"${exchange.properties.payload.idCliente}",
+    "tipoViagem":"${exchange.properties.tipoViagem}",
+    "tipoTransporte":"${exchange.properties.tipoTransporte}",
+    "sentidoLinha":"${exchange.properties.sentidoLinha}",
+    "localizacaoInicial":{
+        "type":"POINT",
+        "coordinates":[
+            ${exchange.properties.payload.latitude},
+            ${exchange.properties.payload.longitude}
+        ]
+    },
+    "totalBilhetes":0,
+    "totalParadas":0,
+    "totalKm":0,
+    "velocidadeMaxima":0,
+    "velocidadeMinima":0,
+    "direcaoContinuaMaxima":0,
+    "paradas":[],
+    "bilhetes":[],
+    "localizacoes":[]
+}

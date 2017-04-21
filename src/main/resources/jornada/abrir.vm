@@ -1,0 +1,14 @@
+{
+    "idJornada":"${body.idJornada}",
+    "dataInicial":"${body.dataHoraEvento}",
+    "coordenadasInicio":{
+        "type":"Point",
+        "coordinates":[
+            ${body.latitude},
+            ${body.longitude}
+        ]
+    },
+    "cpfMotorista":"${body.cpfMotorista}",
+    "placaVeiculo":"${body.placaVeiculo}",
+    "idCliente":${body.idCliente}
+}

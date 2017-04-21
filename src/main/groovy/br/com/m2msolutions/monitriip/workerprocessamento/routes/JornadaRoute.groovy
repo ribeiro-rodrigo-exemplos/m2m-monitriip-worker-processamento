@@ -3,17 +3,22 @@ package br.com.m2msolutions.monitriip.workerprocessamento.routes
 import com.mongodb.DBObject
 import org.apache.camel.builder.DeadLetterChannelBuilder
 import org.apache.camel.builder.RouteBuilder
+import org.apache.camel.component.mongodb.MongoDbConstants
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.beans.factory.annotation.Qualifier
 import org.springframework.stereotype.Component
-
 /**
- * Created by rodrigo on 03/04/17.
+ * Created by Rodrigo Ribeiro on 03/04/17.
  */
 @Component
 class JornadaRoute extends RouteBuilder {
 
     @Autowired
     DeadLetterChannelBuilder globalDeadLetterChannel
+
+    @Autowired
+    @Qualifier('dbConfig')
+    def dbConfig
 
     @Override
     void configure() throws Exception {
@@ -32,20 +37,26 @@ class JornadaRoute extends RouteBuilder {
 
         from('direct:abrir-jornada-route').
             routeId('abrir-jornada').
-            transform(simple('resource:classpath:jornada/abrir.bson')).
-            to('mongodb:monitriipDb?database=test&collection=jornada&operation=insert').
-                log('Jornada ID ${body[_id]}').
+            convertBodyTo(Map).
+            to('velocity:jornada/abrir.vm').
+            to("mongodb:monitriipDb?database=${dbConfig.monitriip.database}&collection=jornada&operation=insert").
         end()
 
         from('direct:fechar-jornada-route').
             routeId('fechar-jornada').
-            transform(simple('resource:classpath:jornada/fechar.bson')).
-            convertBodyTo(DBObject).
-            to('mongodb:monitriipDb?database=test&collection=jornada&operation=update').
+            convertBodyTo(Map).
+            setProperty('payload',simple('${body}')).
+            to("velocity:jornada/consultar-jornada.vm").
+            setHeader(MongoDbConstants.FIELDS_FILTER,constant('{dataInicial:1,_id:0}')).
+            to("mongodb:monitriipDb?database=${dbConfig.monitriip.database}&collection=jornada&operation=findOneByQuery").
             process({
-                if(!it.in.body["matchedCount"])
+                if(!it.in.body)
                     throw new RuntimeException('Jornada não encontrada')
             }).
+            process('processadorDePeriodos').
+            to('velocity:jornada/fechar.vm').
+            convertBodyTo(DBObject).
+            to("mongodb:monitriipDb?database=${dbConfig.monitriip.database}&collection=jornada&operation=update").
         end()
     }
 }

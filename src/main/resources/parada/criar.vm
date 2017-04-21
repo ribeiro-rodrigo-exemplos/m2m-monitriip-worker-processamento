@@ -1,0 +1,24 @@
+[
+    {
+        "idViagem":"${body.idViagem}",
+        "idTransbordo":"${body.idTransbordo}"
+    },
+    {
+        "$push":{
+            "paradas":{
+                "motivoParada":"${exchange.properties.motivo}",
+                "dataHora":"${body.dataHoraEvento}",
+                "localizacao":{
+                    "type":"POINT",
+                    "coordinates":[
+                        ${body.latitude},
+                        ${body.longitude}
+                    ]
+                }
+            }
+        },
+        "$inc":{
+            "totalParadas":1
+        }
+    }
+]

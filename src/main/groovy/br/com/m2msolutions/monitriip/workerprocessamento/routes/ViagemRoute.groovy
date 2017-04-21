@@ -1,8 +1,5 @@
 package br.com.m2msolutions.monitriip.workerprocessamento.routes
 
-import br.com.m2msolutions.monitriip.workerprocessamento.enums.Sentido
-import br.com.m2msolutions.monitriip.workerprocessamento.enums.TipoTransporte
-import br.com.m2msolutions.monitriip.workerprocessamento.enums.TipoViagem
 import com.mongodb.DBObject
 import org.apache.camel.builder.DeadLetterChannelBuilder
 import org.apache.camel.builder.RouteBuilder
@@ -12,7 +9,7 @@ import org.springframework.beans.factory.annotation.Qualifier
 import org.springframework.stereotype.Component
 
 /**
- * Created by rodrigo on 03/04/17.
+ * Created by Rodrigo Ribeiro on 03/04/17.
  */
 @Component
 class ViagemRoute extends RouteBuilder {
@@ -40,12 +37,13 @@ class ViagemRoute extends RouteBuilder {
 
         from('direct:abrir-viagem-route').
             routeId('abrir-viagem-route').
+            convertBodyTo(Map).
             setProperty('payload',simple('${body}')).
-            setBody(simple('resource:classpath:viagem/consultar-linha.bson')).
+            to('velocity:viagem/consultar-linha.vm').
             setHeader(MongoDbConstants.FIELDS_FILTER,constant('{"descr":1}')).
             to("mongodb:frotaDb?database=${dbConfig.frota.database}&collection=Linha&operation=findOneByQuery").
                 setProperty('linha',simple('${body[descr]}')).
-            setBody(simple('resource:classpath:jornada/consultar-jornada.bson')).
+            to('velocity:jornada/consultar-jornada.vm').
             setHeader(MongoDbConstants.FIELDS_FILTER,constant('{"cpfMotorista":1}')).
             to("mongodb:monitriipDb?database=${dbConfig.monitriip.database}&collection=jornada&operation=findOneByQuery").
                 process({
@@ -54,27 +52,26 @@ class ViagemRoute extends RouteBuilder {
                             throw new RuntimeException('Jornada não encontrada')
                 }).
                 setProperty('cpfMotorista',simple('${body[cpfMotorista]}')).
-                process({
-                    e ->
-                        def payload  = e.getProperty 'payload',DBObject
-
-                        e.setProperty 'tipoViagem',TipoViagem.obterTipo(payload['codigoTipoViagem'])
-                        e.setProperty 'sentidoLinha',Sentido.obterSentido(payload['codigoSentidoLinha'])
-                        e.setProperty 'tipoTransporte',TipoTransporte.obterTipo(payload['idLog'])
-                }).
-                setBody(simple('resource:classpath:viagem/abrir.bson')).
+                process('viagemMessagingMapper').
+                to('velocity:viagem/abrir.vm').
             to("mongodb:monitriipDb?database=${dbConfig.monitriip.database}&collection=viagem&operation=insert").
         end()
 
         from('direct:fechar-viagem-route').
             routeId('fechar-viagem-route').
-            setBody(simple('resource:classpath:viagem/fechar.bson')).
-            convertBodyTo(DBObject).
-            to("mongodb:monitriipDb?database=${dbConfig.monitriip.database}&collection=viagem&operation=update").
+            convertBodyTo(Map).
+            setProperty('payload',simple('${body}')).
+            to('velocity:viagem/consultar-transbordo.vm').
+            setHeader(MongoDbConstants.FIELDS_FILTER,constant('{dataInicial:1,_id:0}')).
+            to("mongodb:monitriipDb?database=${dbConfig.monitriip.database}&collection=viagem&operation=findOneByQuery").
             process({
-                if(!it.in.body["matchedCount"])
+                if(!it.in.body)
                     throw new RuntimeException('Viagem não encontrada')
             }).
+            process('processadorDePeriodos').
+            to('velocity:viagem/fechar.vm').
+            convertBodyTo(DBObject).
+            to("mongodb:monitriipDb?database=${dbConfig.monitriip.database}&collection=viagem&operation=update").
         end()
     }
 }

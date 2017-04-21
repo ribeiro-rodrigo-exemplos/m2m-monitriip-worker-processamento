@@ -4,7 +4,7 @@ import org.apache.camel.builder.RouteBuilder
 import org.springframework.stereotype.Component
 
 /**
- * Created by rodrigo on 03/04/17.
+ * Created by Rodrigo Ribeiro on 03/04/17.
  */
 @Component
 class GatewayRoute extends RouteBuilder {
@@ -18,7 +18,7 @@ class GatewayRoute extends RouteBuilder {
                 when().jsonpath('$[?(@.idLog == 4)]').
                     to('mock:velocidade-localizacao-route').
                 when().jsonpath('$[?(@.idLog == 5)]').
-                    to('direct:jornada-route').
+                    to('mock:jornada-route').
                 when().jsonpath('$[?(@.idLog == 6)]').
                     to('mock:parada-route').
                 when().jsonpath('$[?(@.idLog == 7)]').
@@ -27,7 +27,7 @@ class GatewayRoute extends RouteBuilder {
                     to('mock:viagem-route').
                 when().jsonpath('$[?(@.idLog == 9)]').
                     to('mock:bilhete-route').
-                when().jsonpath('$[?(@.idLog == 666)]').
+                when().jsonpath('$[?(@.idLog == 250)]').
                     to('mock:direcao-continua-route').
             endChoice().
         end()

@@ -1,0 +1,14 @@
+[
+    {
+        "idViagem":"${exchange.properties.originalPayload.idViagem}",
+        "idTransbordo":"${exchange.properties.originalPayload.idTransbordo}",
+        "direcaoContinuaMaxima":{
+            "$lt":${exchange.properties.originalPayload.tempoDirecao}
+        }
+    },
+    {
+        "$set":{
+            "direcaoContinuaMaxima":${exchange.properties.originalPayload.tempoDirecao},
+        }
+    }
+]

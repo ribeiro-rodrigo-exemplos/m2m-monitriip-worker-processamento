@@ -3,7 +3,7 @@
   "idViagem":"VAA",
   "idJornada":"AAAA-JJJ",
   "idTransbordo":"uiiu",
-  "tipoRegistroViagem":1,
+  "tipoRegistroViagem":0,
   "codigoTipoViagem":0,
   "codigoSentidoLinha":1,
   "idCliente":12,
@@ -11,7 +11,7 @@
   "identificacaoLinha":"625",
   "latitude":-22.906847,
   "longitude":-43.172896,
-  "dataHoraEvento":"2017-04-01 02:00:00",
+  "dataHoraEvento":"2017-04-02 02:00:00",
   "dataProgramada":"2017-03-31",
   "horaProgramada":"13:00:00"
 }

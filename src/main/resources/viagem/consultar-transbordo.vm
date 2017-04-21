@@ -1,0 +1,4 @@
+{
+    "idViagem":"${body.idViagem}",
+    "idTransbordo":"${body.idTransbordo}"
+}

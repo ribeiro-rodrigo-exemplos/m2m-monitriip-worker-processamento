@@ -5,7 +5,7 @@
 
 	<groupId>br.com.m2msolutions.monitriip.workerprocessamento</groupId>
 	<artifactId>m2m-monitriip-worker-processamento</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
+	<version>1.0.0</version>
 	<packaging>jar</packaging>
 
 	<name>m2m-monitriip-worker-processamento</name>
@@ -47,6 +47,12 @@
         <dependency>
             <groupId>org.apache.camel</groupId>
             <artifactId>camel-mongodb</artifactId>
+            <version>${camel-version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.apache.camel</groupId>
+            <artifactId>camel-velocity</artifactId>
             <version>${camel-version}</version>
         </dependency>
 

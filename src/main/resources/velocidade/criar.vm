@@ -1,0 +1,27 @@
+[
+    {
+        "idViagem":"${exchange.properties.originalPayload.idViagem}",
+        "idTransbordo":"${exchange.properties.originalPayload.idTransbordo}"
+    },
+    {
+        $max:{"velocidadeMaxima":${exchange.properties.originalPayload.velocidadeAtual}},
+        $min:{"velocidadeMinima":${exchange.properties.originalPayload.velocidadeAtual}},
+        $max:{"totalKm":${exchange.properties.distanciaPercorrida}},
+        $push:{
+            "localizacoes":{
+                "dataHoraLocalizacao":"${exchange.properties.originalPayload.dataHoraEvento}",
+                "velocidade":${exchange.properties.originalPayload.velocidadeAtual},
+                "distanciaPercorrida":${exchange.properties.distanciaPercorrida},
+                "situacaoIgnicaoMotor":"${exchange.properties.situacaoIgnicaoMotor}",
+                "situacaoPortaVeiculo":"${exchange.properties.situacaoPortaVeiculo}",
+                "localizacao":{
+                    "type":"POINT",
+                    "coordinates":[
+                        ${exchange.properties.originalPayload.latitude},
+                        ${exchange.properties.originalPayload.longitude}
+                    ]
+                }
+            }
+        }
+    }
+]
