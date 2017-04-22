@@ -28,7 +28,7 @@ class ParadaRoute extends RouteBuilder {
             routeId('parada-route').
             convertBodyTo(Map).
             process({it.setProperty('motivo',MotivoParada.obterTipo(it.in.body['codigoMotivoParada']))}).
-            to('velocity:parada/criar.vm').
+            to('velocity:translators/parada/criar.vm').
             convertBodyTo(DBObject).
             to("mongodb:monitriipDb?database=${dbConfig.monitriip.database}&collection=viagem&operation=update").
             process({

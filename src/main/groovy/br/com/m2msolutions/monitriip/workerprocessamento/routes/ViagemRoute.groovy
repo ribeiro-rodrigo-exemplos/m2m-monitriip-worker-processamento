@@ -39,11 +39,11 @@ class ViagemRoute extends RouteBuilder {
             routeId('abrir-viagem-route').
             convertBodyTo(Map).
             setProperty('payload',simple('${body}')).
-            to('velocity:viagem/consultar-linha.vm').
+            to('velocity:translators/viagem/consultar-linha.vm').
             setHeader(MongoDbConstants.FIELDS_FILTER,constant('{"descr":1}')).
             to("mongodb:frotaDb?database=${dbConfig.frota.database}&collection=Linha&operation=findOneByQuery").
                 setProperty('linha',simple('${body[descr]}')).
-            to('velocity:jornada/consultar-jornada.vm').
+            to('velocity:translators/jornada/consultar-jornada.vm').
             setHeader(MongoDbConstants.FIELDS_FILTER,constant('{"cpfMotorista":1}')).
             to("mongodb:monitriipDb?database=${dbConfig.monitriip.database}&collection=jornada&operation=findOneByQuery").
                 process({
@@ -53,7 +53,7 @@ class ViagemRoute extends RouteBuilder {
                 }).
                 setProperty('cpfMotorista',simple('${body[cpfMotorista]}')).
                 process('viagemMessagingMapper').
-                to('velocity:viagem/abrir.vm').
+                to('velocity:translators/viagem/abrir.vm').
             to("mongodb:monitriipDb?database=${dbConfig.monitriip.database}&collection=viagem&operation=insert").
         end()
 
@@ -61,7 +61,7 @@ class ViagemRoute extends RouteBuilder {
             routeId('fechar-viagem-route').
             convertBodyTo(Map).
             setProperty('payload',simple('${body}')).
-            to('velocity:viagem/consultar-transbordo.vm').
+            to('velocity:translators/viagem/consultar-transbordo.vm').
             setHeader(MongoDbConstants.FIELDS_FILTER,constant('{dataInicial:1,_id:0}')).
             to("mongodb:monitriipDb?database=${dbConfig.monitriip.database}&collection=viagem&operation=findOneByQuery").
             process({
@@ -69,7 +69,7 @@ class ViagemRoute extends RouteBuilder {
                     throw new RuntimeException('Viagem não encontrada')
             }).
             process('processadorDePeriodos').
-            to('velocity:viagem/fechar.vm').
+            to('velocity:translators/viagem/fechar.vm').
             convertBodyTo(DBObject).
             to("mongodb:monitriipDb?database=${dbConfig.monitriip.database}&collection=viagem&operation=update").
         end()

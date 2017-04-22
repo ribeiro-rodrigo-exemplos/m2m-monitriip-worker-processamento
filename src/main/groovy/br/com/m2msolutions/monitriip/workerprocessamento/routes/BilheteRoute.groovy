@@ -27,7 +27,7 @@ class BilheteRoute extends RouteBuilder {
         from("direct:bilhete-route").
             routeId('bilhete-route').
             convertBodyTo(Map).
-            to('velocity:bilhete/criar.vm').
+            to('velocity:translators/bilhete/criar.vm').
             convertBodyTo(DBObject).
             to("mongodb:monitriipDb?database=${dbConfig.monitriip.database}&collection=viagem&operation=update").
             process({

@@ -1,6 +1,6 @@
 application:
-  name: m2m-monitriip-worker-processamento
-  version: 1.0.0
+  name: @name@
+  version: @version@
 
 spring:
   application:

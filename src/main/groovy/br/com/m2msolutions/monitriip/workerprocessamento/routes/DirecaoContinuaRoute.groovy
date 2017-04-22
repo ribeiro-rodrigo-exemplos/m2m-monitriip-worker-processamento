@@ -28,14 +28,14 @@ class DirecaoContinuaRoute extends RouteBuilder {
             routeId('direcao-continua-route').
             convertBodyTo(Map).
             setProperty('originalPayload',simple('${body}')).
-            to('velocity:viagem/consultar-transbordo.vm').
+            to('velocity:translators/viagem/consultar-transbordo.vm').
             setHeader(MongoDbConstants.FIELDS_FILTER,constant("{'_id':1}")).
             to("mongodb:monitriipDb?database=${dbConfig.monitriip.database}&collection=viagem&operation=findOneByQuery").
             process({
                 if(!it.in.body)
                     throw new RuntimeException('Viagem não encontrada')
             }).
-            to('velocity:direcao/criar.vm').
+            to('velocity:translators/direcao/criar.vm').
             convertBodyTo(DBObject).
             to("mongodb:monitriipDb?database=${dbConfig.monitriip.database}&collection=viagem&operation=update").
         end()

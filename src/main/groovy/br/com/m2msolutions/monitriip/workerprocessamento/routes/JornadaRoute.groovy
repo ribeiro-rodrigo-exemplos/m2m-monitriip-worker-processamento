@@ -38,7 +38,7 @@ class JornadaRoute extends RouteBuilder {
         from('direct:abrir-jornada-route').
             routeId('abrir-jornada').
             convertBodyTo(Map).
-            to('velocity:jornada/abrir.vm').
+            to('velocity:translators/jornada/abrir.vm').
             to("mongodb:monitriipDb?database=${dbConfig.monitriip.database}&collection=jornada&operation=insert").
         end()
 
@@ -46,7 +46,7 @@ class JornadaRoute extends RouteBuilder {
             routeId('fechar-jornada').
             convertBodyTo(Map).
             setProperty('payload',simple('${body}')).
-            to("velocity:jornada/consultar-jornada.vm").
+            to("velocity:translators/jornada/consultar-jornada.vm").
             setHeader(MongoDbConstants.FIELDS_FILTER,constant('{dataInicial:1,_id:0}')).
             to("mongodb:monitriipDb?database=${dbConfig.monitriip.database}&collection=jornada&operation=findOneByQuery").
             process({
@@ -54,7 +54,7 @@ class JornadaRoute extends RouteBuilder {
                     throw new RuntimeException('Jornada não encontrada')
             }).
             process('processadorDePeriodos').
-            to('velocity:jornada/fechar.vm').
+            to('velocity:translators/jornada/fechar.vm').
             convertBodyTo(DBObject).
             to("mongodb:monitriipDb?database=${dbConfig.monitriip.database}&collection=jornada&operation=update").
         end()

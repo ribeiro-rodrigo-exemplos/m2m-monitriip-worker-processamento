@@ -31,33 +31,16 @@ class VelocidadeLocalizacaoRoute extends RouteBuilder {
             routeId('velocidade-localizacao-route').
             convertBodyTo(Map).
             setProperty('originalPayload',simple('${body}')).
-            to('velocity:viagem/consultar-transbordo.vm').
+            to('velocity:translators/viagem/consultar-transbordo.vm').
             setHeader(MongoDbConstants.FIELDS_FILTER,constant("{'localizacaoInicial.coordinates':1}")).
             to("mongodb:monitriipDb?database=${dbConfig.monitriip.database}&collection=viagem&operation=findOneByQuery").
             process({
                 if(!it.in.body)
                     throw new RuntimeException('Viagem não encontrada')
             }).
-            process({
-
-                def latitudeInicial = it.in.body['localizacaoInicial']['coordinates'][0] as Double
-                def longitudeInicial = it.in.body['localizacaoInicial']['coordinates'][1] as Double
-
-                def latitudeAtual = it.getProperty('originalPayload')['latitude'] as Double
-                def longitudeAtual = it.getProperty('originalPayload')['longitude'] as Double
-
-                def distancia = DistanceCalculator.distance latitudeAtual,longitudeAtual,latitudeInicial,longitudeInicial,'K'
-                it.setProperty 'distanciaPercorrida',distancia
-
-            }).
-            process({
-
-                def originalPayload = it.getProperty 'originalPayload'
-                it.setProperty 'situacaoIgnicaoMotor',EstadoIgnicao.obterEstado(originalPayload['situacaoIgnicaoMotor'])
-                it.setProperty 'situacaoPortaVeiculo',EstadoPorta.obterEstado(originalPayload['situacaoPortaVeiculo'])
-
-            }).
-            to('velocity:velocidade/criar.vm').
+            process('processadorDeDistancias').
+            process('velocidadeLocalizacaoMessagingMapper').
+            to('velocity:translators/velocidade/criar.vm').
             convertBodyTo(DBObject).
             to("mongodb:monitriipDb?database=${dbConfig.monitriip.database}&collection=viagem&operation=update").
             log('${body}').
