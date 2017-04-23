@@ -1,9 +1,9 @@
 {
   "idLog":7,
-  "idViagem":"VAA",
-  "idJornada":"AAAA-JJJ",
-  "idTransbordo":"uiiu",
-  "tipoRegistroViagem":0,
+  "idViagem":"viagem1",
+  "idJornada":"01",
+  "idTransbordo":"trans01",
+  "tipoRegistroViagem":1,
   "codigoTipoViagem":0,
   "codigoSentidoLinha":1,
   "idCliente":12,

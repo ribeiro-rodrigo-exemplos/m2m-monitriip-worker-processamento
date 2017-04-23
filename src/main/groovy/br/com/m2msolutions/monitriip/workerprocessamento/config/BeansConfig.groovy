@@ -38,4 +38,11 @@ class BeansConfig {
     Map dbConfig(){
         [:]
     }
+
+    @Bean
+    @ConfigurationProperties('rabbitmq')
+    Map rabbitConfig(){
+        [:]
+    }
+
 }

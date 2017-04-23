@@ -4,9 +4,11 @@
         "idTransbordo":"${exchange.properties.originalPayload.idTransbordo}"
     },
     {
-        $max:{"velocidadeMaxima":${exchange.properties.originalPayload.velocidadeAtual}},
+        $max:{
+            "velocidadeMaxima":${exchange.properties.originalPayload.velocidadeAtual},
+            "totalKm":${exchange.properties.distanciaPercorrida}
+        },
         $min:{"velocidadeMinima":${exchange.properties.originalPayload.velocidadeAtual}},
-        $max:{"totalKm":${exchange.properties.distanciaPercorrida}},
         $push:{
             "localizacoes":{
                 "dataHoraLocalizacao":"${exchange.properties.originalPayload.dataHoraEvento}",

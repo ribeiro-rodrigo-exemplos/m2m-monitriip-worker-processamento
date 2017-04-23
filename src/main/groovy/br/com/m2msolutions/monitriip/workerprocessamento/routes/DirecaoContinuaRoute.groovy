@@ -1,7 +1,7 @@
 package br.com.m2msolutions.monitriip.workerprocessamento.routes
 
+import br.com.m2msolutions.monitriip.workerprocessamento.exceptions.ViagemNaoEncontradaException
 import com.mongodb.DBObject
-import org.apache.camel.builder.DeadLetterChannelBuilder
 import org.apache.camel.builder.RouteBuilder
 import org.apache.camel.component.mongodb.MongoDbConstants
 import org.springframework.beans.factory.annotation.Autowired
@@ -15,14 +15,16 @@ import org.springframework.stereotype.Component
 class DirecaoContinuaRoute extends RouteBuilder {
 
     @Autowired
-    DeadLetterChannelBuilder globalDeadLetterChannel
-
-    @Autowired
     @Qualifier('dbConfig')
     def dbConfig
 
     @Override
     void configure() throws Exception {
+
+        onException(ViagemNaoEncontradaException).
+                redeliveryDelay(8000).
+                maximumRedeliveries(10).
+                logExhaustedMessageHistory(false)
 
         from('direct:direcao-continua-route').
             routeId('direcao-continua-route').
@@ -33,9 +35,9 @@ class DirecaoContinuaRoute extends RouteBuilder {
             to("mongodb:monitriipDb?database=${dbConfig.monitriip.database}&collection=viagem&operation=findOneByQuery").
             process({
                 if(!it.in.body)
-                    throw new RuntimeException('Viagem não encontrada')
+                    throw new ViagemNaoEncontradaException()
             }).
-            to('velocity:translators/direcao/criar.vm').
+            to('velocity:translators/direcao/atualizar.vm').
             convertBodyTo(DBObject).
             to("mongodb:monitriipDb?database=${dbConfig.monitriip.database}&collection=viagem&operation=update").
         end()

@@ -1,6 +1,8 @@
 package br.com.m2msolutions.monitriip.workerprocessamento.routes
 
 import org.apache.camel.builder.RouteBuilder
+import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.beans.factory.annotation.Qualifier
 import org.springframework.stereotype.Component
 
 /**
@@ -9,26 +11,32 @@ import org.springframework.stereotype.Component
 @Component
 class GatewayRoute extends RouteBuilder {
 
+    @Autowired
+    @Qualifier('rabbitConfig')
+    def rcfg
+
     @Override
     void configure() throws Exception {
 
-        from("file:exemplos?delay=5s&noop=true").
+        from("rabbitmq://${rcfg.url}/${rcfg.exchange}?queue=${rcfg.queue}&deadLetterExchange=${rcfg.exchangeDlq}" +
+                "&deadLetterQueue=${rcfg.deadLetterQueue}&deadLetterRoutingKey=dead.letters&autoAck=false&" +
+                "autoDelete=false&concurrentConsumers=10").
             unmarshal().string().
             choice().
                 when().jsonpath('$[?(@.idLog == 4)]').
-                    to('mock:velocidade-localizacao-route').
+                    to('direct:velocidade-localizacao-route').
                 when().jsonpath('$[?(@.idLog == 5)]').
-                    to('mock:jornada-route').
+                    to('direct:jornada-route').
                 when().jsonpath('$[?(@.idLog == 6)]').
-                    to('mock:parada-route').
+                    to('direct:parada-route').
                 when().jsonpath('$[?(@.idLog == 7)]').
                     to('direct:viagem-route').
                 when().jsonpath('$[?(@.idLog == 8)]').
-                    to('mock:viagem-route').
+                    to('direct:viagem-route').
                 when().jsonpath('$[?(@.idLog == 9)]').
-                    to('mock:bilhete-route').
+                    to('direct:bilhete-route').
                 when().jsonpath('$[?(@.idLog == 250)]').
-                    to('mock:direcao-continua-route').
+                    to('direct:direcao-continua-route').
             endChoice().
         end()
 

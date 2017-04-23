@@ -19,3 +19,10 @@ databases:
     host: localhost
     port: 27017
     database: test
+
+rabbitmq:
+  url: localhost
+  exchange: processador.monitriip
+  queue: eventos.monitriip
+  exchange-dlq: monitriip.processador.erro
+  deadLetterQueue: eventos.monitriip.DLQ

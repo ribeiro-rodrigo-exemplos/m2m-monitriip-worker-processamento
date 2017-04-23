@@ -21,7 +21,7 @@
     "totalParadas":0,
     "totalKm":0,
     "velocidadeMaxima":0,
-    "velocidadeMinima":0,
+    "velocidadeMinima":{"$maxKey":1},
     "direcaoContinuaMaxima":0,
     "paradas":[],
     "bilhetes":[],

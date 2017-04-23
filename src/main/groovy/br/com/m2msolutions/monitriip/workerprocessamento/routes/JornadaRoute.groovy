@@ -1,7 +1,7 @@
 package br.com.m2msolutions.monitriip.workerprocessamento.routes
 
+import br.com.m2msolutions.monitriip.workerprocessamento.exceptions.JornadaNaoEncontradaException
 import com.mongodb.DBObject
-import org.apache.camel.builder.DeadLetterChannelBuilder
 import org.apache.camel.builder.RouteBuilder
 import org.apache.camel.component.mongodb.MongoDbConstants
 import org.springframework.beans.factory.annotation.Autowired
@@ -14,16 +14,16 @@ import org.springframework.stereotype.Component
 class JornadaRoute extends RouteBuilder {
 
     @Autowired
-    DeadLetterChannelBuilder globalDeadLetterChannel
-
-    @Autowired
     @Qualifier('dbConfig')
     def dbConfig
 
     @Override
     void configure() throws Exception {
 
-        //errorHandler(globalDeadLetterChannel)
+        onException(JornadaNaoEncontradaException).
+                redeliveryDelay(8000).
+                maximumRedeliveries(10).
+                logExhaustedMessageHistory(false)
 
         from("direct:jornada-route").
             routeId('jornada-route').
@@ -51,7 +51,7 @@ class JornadaRoute extends RouteBuilder {
             to("mongodb:monitriipDb?database=${dbConfig.monitriip.database}&collection=jornada&operation=findOneByQuery").
             process({
                 if(!it.in.body)
-                    throw new RuntimeException('Jornada não encontrada')
+                    throw new JornadaNaoEncontradaException()
             }).
             process('processadorDePeriodos').
             to('velocity:translators/jornada/fechar.vm').
