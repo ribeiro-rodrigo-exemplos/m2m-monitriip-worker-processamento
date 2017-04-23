@@ -47,7 +47,6 @@ class VelocidadeLocalizacaoRoute extends RouteBuilder {
             to('velocity:translators/velocidade/criar.vm').
             convertBodyTo(DBObject).
             to("mongodb:monitriipDb?database=${dbConfig.monitriip.database}&collection=viagem&operation=update").
-            log('${body}').
         end()
 
     }
