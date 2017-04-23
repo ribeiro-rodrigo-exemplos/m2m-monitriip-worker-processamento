@@ -3,6 +3,7 @@ package br.com.m2msolutions.monitriip.workerprocessamento.routes
 import br.com.m2msolutions.monitriip.workerprocessamento.exceptions.JornadaNaoEncontradaException
 import br.com.m2msolutions.monitriip.workerprocessamento.exceptions.ViagemNaoEncontradaException
 import com.mongodb.DBObject
+import org.apache.camel.LoggingLevel
 import org.apache.camel.builder.RouteBuilder
 import org.apache.camel.component.mongodb.MongoDbConstants
 import org.springframework.beans.factory.annotation.Autowired
@@ -19,13 +20,20 @@ class ViagemRoute extends RouteBuilder {
     @Qualifier('dbConfig')
     def dbConfig
 
+    @Autowired
+    @Qualifier('rabbitConfig')
+    def rcfg
+
     @Override
     void configure() throws Exception {
 
         onException(JornadaNaoEncontradaException,ViagemNaoEncontradaException).
-                redeliveryDelay(8000).
-                maximumRedeliveries(10).
-                logExhaustedMessageHistory(false)
+            log(LoggingLevel.WARN,"${this.class.simpleName}",'${exception.message} - id: ${id}').
+            logExhaustedMessageHistory(false).
+            maximumRedeliveries(0).
+            useOriginalMessage().
+            to("direct:fallback-route").
+        end()
 
         from('direct:viagem-route').
             routeId('viagem-route').
@@ -50,10 +58,11 @@ class ViagemRoute extends RouteBuilder {
             to("mongodb:monitriipDb?database=${dbConfig.monitriip.database}&collection=jornada&operation=findOneByQuery").
             process({
                 e ->
-                    if(!e.in.body)
-                        throw new JornadaNaoEncontradaException()
+                    if(!e.in.body){
+                        def message = "Jornada ${e.getProperty('payload')['idJornada']} não foi encontrada."
+                        throw new JornadaNaoEncontradaException(message)
+                    }
             }).
-            setProperty('cpfMotorista',simple('${body[cpfMotorista]}')).
             process('viagemMessagingMapper').
             to('velocity:translators/viagem/abrir.vm').
             to("mongodb:monitriipDb?database=${dbConfig.monitriip.database}&collection=viagem&operation=insert").
@@ -67,8 +76,10 @@ class ViagemRoute extends RouteBuilder {
             setHeader(MongoDbConstants.FIELDS_FILTER,constant('{dataInicial:1,_id:0}')).
             to("mongodb:monitriipDb?database=${dbConfig.monitriip.database}&collection=viagem&operation=findOneByQuery").
             process({
-                if(!it.in.body)
-                    throw new ViagemNaoEncontradaException()
+                if(!it.in.body){
+                    def message = "Jornada ${it.getProperty('payload')['idViagem']} não foi encontrada."
+                    throw new ViagemNaoEncontradaException(message)
+                }
             }).
             process('processadorDePeriodos').
             to('velocity:translators/viagem/fechar.vm').

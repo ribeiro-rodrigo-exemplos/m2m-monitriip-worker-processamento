@@ -26,3 +26,12 @@ rabbitmq:
   queue: eventos.monitriip
   exchange-dlq: monitriip.processador.erro
   deadLetterQueue: eventos.monitriip.DLQ
+  username: guest
+  password: guest
+  fallback-delay: 60000
+
+logging:
+  file: /home/rodrigo/processador.log
+
+
+

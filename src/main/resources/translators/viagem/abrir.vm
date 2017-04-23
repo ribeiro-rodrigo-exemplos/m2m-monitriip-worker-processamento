@@ -3,7 +3,7 @@
     "idTransbordo":"${exchange.properties.payload.idTransbordo}",
     "identificacaoLinha":"${exchange.properties.payload.identificacaoLinha}",
     "dataInicial":"${exchange.properties.payload.dataHoraEvento}",
-    "cpfMotorista":"${exchange.properties.cpfMotorista}",
+    "cpfMotorista":"${body.cpfMotorista}",
     "placaVeiculo":"${exchange.properties.payload.placaVeiculo}",
     "descricaoDaLinha":"${exchange.properties.linha}",
     "idCliente":"${exchange.properties.payload.idCliente}",

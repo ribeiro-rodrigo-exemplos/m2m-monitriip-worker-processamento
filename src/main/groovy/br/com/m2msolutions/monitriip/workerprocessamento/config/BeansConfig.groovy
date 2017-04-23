@@ -44,5 +44,4 @@ class BeansConfig {
     Map rabbitConfig(){
         [:]
     }
-
 }

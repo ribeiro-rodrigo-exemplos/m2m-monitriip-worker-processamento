@@ -2,6 +2,7 @@ package br.com.m2msolutions.monitriip.workerprocessamento.routes
 
 import br.com.m2msolutions.monitriip.workerprocessamento.exceptions.JornadaNaoEncontradaException
 import com.mongodb.DBObject
+import org.apache.camel.LoggingLevel
 import org.apache.camel.builder.RouteBuilder
 import org.apache.camel.component.mongodb.MongoDbConstants
 import org.springframework.beans.factory.annotation.Autowired
@@ -21,9 +22,12 @@ class JornadaRoute extends RouteBuilder {
     void configure() throws Exception {
 
         onException(JornadaNaoEncontradaException).
-                redeliveryDelay(8000).
-                maximumRedeliveries(10).
-                logExhaustedMessageHistory(false)
+            log(LoggingLevel.WARN,"${this.class.simpleName}",'${exception.message} - id: ${id}').
+            maximumRedeliveries(0).
+            logExhaustedMessageHistory(false).
+            useOriginalMessage().
+            to("direct:fallback-route").
+        end()
 
         from("direct:jornada-route").
             routeId('jornada-route').
@@ -50,8 +54,10 @@ class JornadaRoute extends RouteBuilder {
             setHeader(MongoDbConstants.FIELDS_FILTER,constant('{dataInicial:1,_id:0}')).
             to("mongodb:monitriipDb?database=${dbConfig.monitriip.database}&collection=jornada&operation=findOneByQuery").
             process({
-                if(!it.in.body)
-                    throw new JornadaNaoEncontradaException()
+                if(!it.in.body){
+                    def message = "Jornada ${it.getProperty('payload')['idJornada']} não foi encontrada."
+                    throw new JornadaNaoEncontradaException(message)
+                }
             }).
             process('processadorDePeriodos').
             to('velocity:translators/jornada/fechar.vm').

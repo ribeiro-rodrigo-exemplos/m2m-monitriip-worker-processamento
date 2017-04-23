@@ -2,6 +2,7 @@ package br.com.m2msolutions.monitriip.workerprocessamento.routes
 
 import br.com.m2msolutions.monitriip.workerprocessamento.exceptions.ViagemNaoEncontradaException
 import com.mongodb.DBObject
+import org.apache.camel.LoggingLevel
 import org.apache.camel.builder.RouteBuilder
 import org.apache.camel.component.mongodb.MongoDbConstants
 import org.springframework.beans.factory.annotation.Autowired
@@ -21,9 +22,12 @@ class VelocidadeLocalizacaoRoute extends RouteBuilder {
     void configure() throws Exception {
 
         onException(ViagemNaoEncontradaException).
-                redeliveryDelay(8000).
-                maximumRedeliveries(10).
-                logExhaustedMessageHistory(false)
+            log(LoggingLevel.WARN,"${this.class.simpleName}",'${exception.message} - id: ${id}').
+            maximumRedeliveries(0).
+            logExhaustedMessageHistory(false).
+            useOriginalMessage().
+            to("direct:fallback-route").
+        end()
 
         from('direct:velocidade-localizacao-route').
             routeId('velocidade-localizacao-route').
@@ -33,8 +37,10 @@ class VelocidadeLocalizacaoRoute extends RouteBuilder {
             setHeader(MongoDbConstants.FIELDS_FILTER,constant("{'localizacaoInicial.coordinates':1}")).
             to("mongodb:monitriipDb?database=${dbConfig.monitriip.database}&collection=viagem&operation=findOneByQuery").
             process({
-                if(!it.in.body)
-                    throw new ViagemNaoEncontradaException()
+                if(!it.in.body){
+                    def message = "Viagem ${it.getProperty('originalPayload')['idViagem']} não foi encontrada."
+                    throw new ViagemNaoEncontradaException(message)
+                }
             }).
             process('processadorDeDistancias').
             process('velocidadeLocalizacaoMessagingMapper').
