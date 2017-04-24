@@ -3,6 +3,7 @@ package br.com.m2msolutions.monitriip.workerprocessamento.processors
 import br.com.m2msolutions.monitriip.workerprocessamento.enums.Sentido
 import br.com.m2msolutions.monitriip.workerprocessamento.enums.TipoTransporte
 import br.com.m2msolutions.monitriip.workerprocessamento.enums.TipoViagem
+import br.com.m2msolutions.monitriip.workerprocessamento.util.DateUtil
 import com.mongodb.DBObject
 import org.apache.camel.Exchange
 import org.apache.camel.Processor
@@ -24,3 +25,4 @@ class ViagemMessagingMapper implements Processor{
         e.setProperty 'tipoTransporte',TipoTransporte.obterTipo(payload['idLog'])
     }
 }
+

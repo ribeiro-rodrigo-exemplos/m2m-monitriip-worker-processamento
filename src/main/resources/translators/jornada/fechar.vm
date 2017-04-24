@@ -5,7 +5,8 @@
     },
     {
       "$set":{
-        "dataFinal":"${exchange.properties.payload.dataHoraEvento}",
+        "dataHoraFinal":"${exchange.properties.payload.dataHoraEvento}",
+        "dataFinal":"${exchange.properties.dataFinal}",
         "duracao":${exchange.properties.duracao},
         "aberto":false,
         "coordenadasFim":{

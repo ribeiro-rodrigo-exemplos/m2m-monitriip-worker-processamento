@@ -1,6 +1,7 @@
 package br.com.m2msolutions.monitriip.workerprocessamento.routes
 
 import br.com.m2msolutions.monitriip.workerprocessamento.exceptions.JornadaNaoEncontradaException
+import br.com.m2msolutions.monitriip.workerprocessamento.util.DateUtil
 import com.mongodb.DBObject
 import org.apache.camel.LoggingLevel
 import org.apache.camel.builder.RouteBuilder
@@ -42,6 +43,9 @@ class JornadaRoute extends RouteBuilder {
         from('direct:abrir-jornada-route').
             routeId('abrir-jornada').
             convertBodyTo(Map).
+            process({e ->
+                e.setProperty 'dataInicial', DateUtil.formatarData(e.in.body['dataHoraEvento'] as String)
+            }).
             to('velocity:translators/jornada/abrir.vm').
             to("mongodb:monitriipDb?database=${dbConfig.monitriip.database}&collection=jornada&operation=insert").
         end()
@@ -51,7 +55,7 @@ class JornadaRoute extends RouteBuilder {
             convertBodyTo(Map).
             setProperty('payload',simple('${body}')).
             to("velocity:translators/jornada/consultar-jornada.vm").
-            setHeader(MongoDbConstants.FIELDS_FILTER,constant('{dataInicial:1,_id:0}')).
+            setHeader(MongoDbConstants.FIELDS_FILTER,constant('{dataHoraInicial:1,_id:0}')).
             to("mongodb:monitriipDb?database=${dbConfig.monitriip.database}&collection=jornada&operation=findOneByQuery").
             process({
                 if(!it.in.body){
@@ -60,6 +64,9 @@ class JornadaRoute extends RouteBuilder {
                 }
             }).
             process('processadorDePeriodos').
+            process({e ->
+                e.setProperty 'dataFinal', DateUtil.formatarData(e.getProperty('payload')['dataHoraEvento'] as String)
+            }).
             to('velocity:translators/jornada/fechar.vm').
             convertBodyTo(DBObject).
             to("mongodb:monitriipDb?database=${dbConfig.monitriip.database}&collection=jornada&operation=update").

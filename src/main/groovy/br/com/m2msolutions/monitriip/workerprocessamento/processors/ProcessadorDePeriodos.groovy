@@ -24,7 +24,7 @@ class ProcessadorDePeriodos implements Processor {
 
         def dataHoraFinal = dateFormat.parse(e.getProperty('payload',Map)['dataHoraEvento'])
 
-        def dataHoraInicial = dateFormat.parse e.in.body['dataInicial']
+        def dataHoraInicial = dateFormat.parse e.in.body['dataHoraInicial']
 
         def duracaoEmMinutos = periodCalculator.calcularPeriodoEmMinutos dataHoraInicial, dataHoraFinal
 
