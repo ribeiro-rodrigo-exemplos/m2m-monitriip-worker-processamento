@@ -1,6 +1,7 @@
 {
     "idJornada":"${body.idJornada}",
     "dataInicial":"${body.dataHoraEvento}",
+    "cnpjCliente":"${body.cnpjEmpresaTransporte}",
     "coordenadasInicio":{
         "type":"Point",
         "coordinates":[

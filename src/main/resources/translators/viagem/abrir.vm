@@ -2,6 +2,7 @@
     "idViagem":"${exchange.properties.payload.idViagem}",
     "idTransbordo":"${exchange.properties.payload.idTransbordo}",
     "identificacaoLinha":"${exchange.properties.payload.identificacaoLinha}",
+    "cnpjCliente":"${exchange.properties.payload.cnpjEmpresaTransporte}",
     "dataInicial":"${exchange.properties.payload.dataHoraEvento}",
     "cpfMotorista":"${body.cpfMotorista}",
     "placaVeiculo":"${exchange.properties.payload.placaVeiculo}",
