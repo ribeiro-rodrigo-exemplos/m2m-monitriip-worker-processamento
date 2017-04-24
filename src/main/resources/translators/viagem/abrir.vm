@@ -26,5 +26,6 @@
     "direcaoContinuaMaxima":0,
     "paradas":[],
     "bilhetes":[],
-    "localizacoes":[]
+    "localizacoes":[],
+    "aberto":true
 }

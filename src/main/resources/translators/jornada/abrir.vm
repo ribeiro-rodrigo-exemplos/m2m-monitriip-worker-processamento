@@ -11,5 +11,6 @@
     },
     "cpfMotorista":"${body.cpfMotorista}",
     "placaVeiculo":"${body.placaVeiculo}",
-    "idCliente":${body.idCliente}
+    "idCliente":${body.idCliente},
+    "aberto":true
 }

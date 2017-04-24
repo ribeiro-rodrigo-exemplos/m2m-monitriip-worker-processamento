@@ -7,6 +7,7 @@
       "$set":{
         "dataFinal":"${exchange.properties.payload.dataHoraEvento}",
         "duracao":${exchange.properties.duracao},
+        "aberto":false,
         "coordenadasFim":{
             "type":"POINT",
             "coordinates":[
