@@ -24,7 +24,7 @@ rabbitmq:
   url: localhost
   exchange: processador.monitriip
   queue: eventos.monitriip
-  exchange-dlq: monitriip.processador.erro
+  exchange-dlq: processador.monitriip.DLQ
   deadLetterQueue: eventos.monitriip.DLQ
   username: guest
   password: guest

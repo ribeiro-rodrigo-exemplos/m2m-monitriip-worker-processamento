@@ -18,7 +18,7 @@ class GatewayRoute extends RouteBuilder {
     @Override
     void configure() throws Exception {
 
-        from("rabbitmq://${rcfg.url}/${rcfg.exchange}?queue=${rcfg.queue}&deadLetterExchange=${rcfg.exchangeDlq}" +
+        from("rabbitmq://${rcfg.url}/${rcfg.exchange}?queue=${rcfg.queue}&deadLetterExchange=${rcfg['exchange-dlq']}" +
                 "&deadLetterQueue=${rcfg.deadLetterQueue}&deadLetterRoutingKey=dead.letters&autoAck=false&" +
                 "autoDelete=false&concurrentConsumers=10&username=${rcfg.username}&password=${rcfg.password}").
             unmarshal().string().
