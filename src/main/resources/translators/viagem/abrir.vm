@@ -1,6 +1,6 @@
 {
     "idViagem":"${exchange.properties.payload.idViagem}",
-    "idTransbordo":"${exchange.properties.payload.idTransbordo}",
+    "idServico":"${exchange.properties.payload.idServico}",
     "identificacaoLinha":"${exchange.properties.payload.identificacaoLinha}",
     "cnpjCliente":"${exchange.properties.payload.cnpjEmpresaTransporte}",
     "dataHoraInicial":"${exchange.properties.payload.dataHoraEvento}",

@@ -1,7 +1,7 @@
 [
     {
         "idViagem":"${exchange.properties.payload.idViagem}",
-        "idTransbordo":"${exchange.properties.payload.idTransbordo}"
+        "idServico":"${exchange.properties.payload.idServico}"
     },
     {
         "$set":{

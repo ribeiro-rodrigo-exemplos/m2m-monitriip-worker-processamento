@@ -1,7 +1,7 @@
 [
     {
         "idViagem":"${body.idViagem}",
-        "idTransbordo":"${body.idTransbordo}"
+        "idServico":"${body.idServico}"
     },
     {
         "$inc":{
@@ -10,7 +10,7 @@
         "$push":{
             "bilhetes":{
                 "idViagem":"${body.idViagem}",
-                "idTransbordo":"${body.idTransbordo}",
+                "idServico":"${body.idServico}",
                 "dataHoraEvento":"${body.dataHoraEvento}",
                 "numeroEquipamento":"${body.dataHoraEvento}",
                 "numeroBilheteEmbarque":"${body.numeroEquipamento}",

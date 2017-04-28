@@ -1,7 +1,7 @@
 [
     {
         "idViagem":"${body.idViagem}",
-        "idTransbordo":"${body.idTransbordo}"
+        "idServico":"${body.idServico}"
     },
     {
         "$push":{
