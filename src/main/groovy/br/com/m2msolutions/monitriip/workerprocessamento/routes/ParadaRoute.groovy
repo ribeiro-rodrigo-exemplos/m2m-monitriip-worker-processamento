@@ -32,7 +32,6 @@ class ParadaRoute extends RouteBuilder {
 
         from('direct:parada-route').
             routeId('parada-route').
-            convertBodyTo(Map).
             setProperty('idViagem',simple('${body[idViagem]}')).
             process({it.setProperty('motivo',MotivoParada.obterTipo(it.in.body['codigoMotivoParada']))}).
             to('velocity:translators/parada/criar.vm').

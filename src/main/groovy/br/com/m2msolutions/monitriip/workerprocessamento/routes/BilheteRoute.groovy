@@ -32,7 +32,6 @@ class BilheteRoute extends RouteBuilder {
 
         from("direct:bilhete-route").
             routeId('bilhete-route').
-            convertBodyTo(Map).
             setProperty('idViagem',simple('${body[idViagem]}')).
             to('velocity:translators/bilhete/criar.vm').
             convertBodyTo(DBObject).

@@ -22,20 +22,21 @@ class GatewayRoute extends RouteBuilder {
                 "&deadLetterQueue=${rcfg.deadLetterQueue}&deadLetterRoutingKey=dead.letters&autoAck=false&" +
                 "autoDelete=false&concurrentConsumers=10&username=${rcfg.username}&password=${rcfg.password}").
             unmarshal().string().
+            convertBodyTo(Map).
             choice().
-                when().jsonpath('$[?(@.idLog == 4)]').
+                when().expression(simple('${body[idLog]} == 4')).
                     to('direct:velocidade-localizacao-route').
-                when().jsonpath('$[?(@.idLog == 5)]').
+                when().expression(simple('${body[idLog]} == 5')).
                     to('direct:jornada-route').
-                when().jsonpath('$[?(@.idLog == 6)]').
+                when().expression(simple('${body[idLog]} == 6')).
                     to('direct:parada-route').
-                when().jsonpath('$[?(@.idLog == 7)]').
+                when().expression(simple('${body[idLog]} == 7')).
                     to('direct:viagem-route').
-                when().jsonpath('$[?(@.idLog == 8)]').
+                when().expression(simple('${body[idLog]} == 8')).
                     to('direct:viagem-route').
-                when().jsonpath('$[?(@.idLog == 9)]').
+                when().expression(simple('${body[idLog]} == 9')).
                     to('direct:bilhete-route').
-                when().jsonpath('$[?(@.idLog == 250)]').
+                when().expression(simple('${body[idLog]} == 250')).
                     to('direct:direcao-continua-route').
             endChoice().
         end()

@@ -39,16 +39,15 @@ class ViagemRoute extends RouteBuilder {
         from('direct:viagem-route').
             routeId('viagem-route').
             choice().
-                when().jsonpath('$[?(@.tipoRegistroViagem == 1)]').
+                when().expression(simple('${body[tipoRegistroViagem]} == 1')).
                     to('direct:abrir-viagem-route').
-                when().jsonpath('$[?(@.tipoRegistroViagem == 0)]').
+                when().expression(simple('${body[tipoRegistroViagem]} == 0')).
                     to('direct:fechar-viagem-route').
             endChoice().
         end()
 
         from('direct:abrir-viagem-route').
             routeId('abrir-viagem-route').
-            convertBodyTo(Map).
             setProperty('payload',simple('${body}')).
             to('velocity:translators/viagem/consultar-linha.vm').
             setHeader(MongoDbConstants.FIELDS_FILTER,constant('{"descr":1}')).
@@ -57,38 +56,39 @@ class ViagemRoute extends RouteBuilder {
             to('velocity:translators/jornada/consultar-jornada.vm').
             setHeader(MongoDbConstants.FIELDS_FILTER,constant('{"cpfMotorista":1}')).
             to("mongodb:monitriipDb?database=${dbConfig.monitriip.database}&collection=jornada&operation=findOneByQuery").
-            process({
+            process{
                 e ->
                     if(!e.in.body){
                         def message = "Jornada ${e.getProperty('payload')['idJornada']} não foi encontrada."
                         throw new JornadaNaoEncontradaException(message)
                     }
-            }).
+            }.
             process('viagemMessagingMapper').
-            process({e ->
-                e.setProperty 'dataInicial', DateUtil.formatarData(e.getProperty('payload')['dataHoraEvento'] as String)
-            }).
+            process{
+                e ->
+                    e.setProperty 'dataInicial', DateUtil.formatarData(e.getProperty('payload')['dataHoraEvento'] as String)
+            }.
             to('velocity:translators/viagem/abrir.vm').
             to("mongodb:monitriipDb?database=${dbConfig.monitriip.database}&collection=viagem&operation=insert").
         end()
 
         from('direct:fechar-viagem-route').
             routeId('fechar-viagem-route').
-            convertBodyTo(Map).
             setProperty('payload',simple('${body}')).
-            to('velocity:translators/viagem/consultar-transbordo.vm').
+            to('velocity:translators/viagem/consultar-periodo.vm').
             setHeader(MongoDbConstants.FIELDS_FILTER,constant('{dataHoraInicial:1,_id:0}')).
             to("mongodb:monitriipDb?database=${dbConfig.monitriip.database}&collection=viagem&operation=findOneByQuery").
-            process({
+            process{
                 if(!it.in.body){
                     def message = "Jornada ${it.getProperty('payload')['idViagem']} não foi encontrada."
                     throw new ViagemNaoEncontradaException(message)
                 }
-            }).
+            }.
             process('processadorDePeriodos').
-            process({e ->
-                e.setProperty 'dataFinal', DateUtil.formatarData(e.getProperty('payload')['dataHoraEvento'] as String)
-            }).
+            process{
+                e ->
+                    e.setProperty 'dataFinal', DateUtil.formatarData(e.getProperty('payload')['dataHoraEvento'] as String)
+            }.
             to('velocity:translators/viagem/fechar.vm').
             convertBodyTo(DBObject).
             to("mongodb:monitriipDb?database=${dbConfig.monitriip.database}&collection=viagem&operation=update").

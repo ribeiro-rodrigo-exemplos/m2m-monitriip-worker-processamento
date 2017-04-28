@@ -33,16 +33,15 @@ class JornadaRoute extends RouteBuilder {
         from("direct:jornada-route").
             routeId('jornada-route').
             choice().
-                when().jsonpath('$[?(@.tipoRegistroEvento == 1)]').
+                when().expression(simple('${body[tipoRegistroEvento]} == 1')).
                     to('direct:abrir-jornada-route').
-                when().jsonpath('$[?(@.tipoRegistroEvento == 0)]').
+                when().expression(simple('${body[tipoRegistroEvento]} == 0')).
                     to('direct:fechar-jornada-route').
             endChoice().
         end()
 
         from('direct:abrir-jornada-route').
             routeId('abrir-jornada').
-            convertBodyTo(Map).
             process({e ->
                 e.setProperty 'dataInicial', DateUtil.formatarData(e.in.body['dataHoraEvento'] as String)
             }).
@@ -52,7 +51,6 @@ class JornadaRoute extends RouteBuilder {
 
         from('direct:fechar-jornada-route').
             routeId('fechar-jornada').
-            convertBodyTo(Map).
             setProperty('payload',simple('${body}')).
             to("velocity:translators/jornada/consultar-jornada.vm").
             setHeader(MongoDbConstants.FIELDS_FILTER,constant('{dataHoraInicial:1,_id:0}')).

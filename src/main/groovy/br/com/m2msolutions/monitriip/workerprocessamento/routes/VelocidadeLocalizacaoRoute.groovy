@@ -31,9 +31,8 @@ class VelocidadeLocalizacaoRoute extends RouteBuilder {
 
         from('direct:velocidade-localizacao-route').
             routeId('velocidade-localizacao-route').
-            convertBodyTo(Map).
             setProperty('originalPayload',simple('${body}')).
-            to('velocity:translators/viagem/consultar-transbordo.vm').
+            to('velocity:translators/viagem/consultar-periodo.vm').
             setHeader(MongoDbConstants.FIELDS_FILTER,constant("{'localizacaoInicial.coordinates':1}")).
             to("mongodb:monitriipDb?database=${dbConfig.monitriip.database}&collection=viagem&operation=findOneByQuery").
             process({
