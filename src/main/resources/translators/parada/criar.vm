@@ -18,7 +18,8 @@
             }
         },
         "$inc":{
-            "totalParadas":1
+            "totalParadas":1,
+            "totalParadasPorMotivo.${exchange.properties.motivo}":1
         }
     }
 ]

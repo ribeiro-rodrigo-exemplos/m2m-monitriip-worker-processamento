@@ -28,5 +28,18 @@
     "paradas":[],
     "bilhetes":[],
     "localizacoes":[],
-    "aberto":true
+    "aberto":true,
+    "totalParadasPorMotivo":{
+        "PROGRAMADA":0,
+        "SOLICITACAO_DE_PASSAGEIRO":0,
+        "SOLICITACAO_DE_MOTORISTA":0,
+        "SOLICITACAO_EXTERNA":0,
+        "SOLICITACAO_FISCALIZACAO":0,
+        "ACIDENTE_NA_VIA":0,
+        "ACIDENTE_COM_VEICULO":0,
+        "ACIDENTE_COM_PASSAGEIRO":0,
+        "DEFEITO_NO_VEICULO":0,
+        "TROCA_PROGRAMADA_DE_VEICULO":0,
+        "OUTRO":0
+    }
 }
