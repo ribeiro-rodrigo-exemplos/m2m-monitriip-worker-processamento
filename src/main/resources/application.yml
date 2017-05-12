@@ -31,7 +31,7 @@ rabbitmq:
   fallback-delay: 60000
 
 logging:
-  file: /home/rodrigo/processador.log
+  file: /var/log/m2m-monitriip-worker-processamento.log
 
 
 
