@@ -5,24 +5,30 @@
     },
     {
         $max:{
-            "velocidadeMaxima":${exchange.properties.originalPayload.velocidadeAtual},
-            "totalKm":${exchange.properties.distanciaPercorrida}
+            "velocidadeMaxima":${exchange.properties.originalPayload.velocidadeAtual}
+            #if ($exchange.properties.distanciaPercorrida)
+                ,"totalKm":${exchange.properties.distanciaPercorrida}
+            #end
         },
         $min:{"velocidadeMinima":${exchange.properties.originalPayload.velocidadeAtual}},
         $push:{
             "localizacoes":{
                 "dataHoraLocalizacao":"${exchange.properties.originalPayload.dataHoraEvento}",
                 "velocidade":${exchange.properties.originalPayload.velocidadeAtual},
-                "distanciaPercorrida":${exchange.properties.distanciaPercorrida},
+                #if ($exchange.properties.distanciaPercorrida)
+                    "distanciaPercorrida":${exchange.properties.distanciaPercorrida},
+                #end
                 "situacaoIgnicaoMotor":"${exchange.properties.situacaoIgnicaoMotor}",
                 "situacaoPortaVeiculo":"${exchange.properties.situacaoPortaVeiculo}",
-                "localizacao":{
-                    "type":"POINT",
-                    "coordinates":[
-                        ${exchange.properties.originalPayload.latitude},
-                        ${exchange.properties.originalPayload.longitude}
-                    ]
-                }
+                #if ($exchange.properties.originalPayload.latitude and $exchange.properties.originalPayload.longitude)
+                    "localizacao":{
+                        "type":"POINT",
+                        "coordinates":[
+                            ${exchange.properties.originalPayload.latitude},
+                            ${exchange.properties.originalPayload.longitude}
+                        ]
+                    }
+                #end
             }
         }
     }

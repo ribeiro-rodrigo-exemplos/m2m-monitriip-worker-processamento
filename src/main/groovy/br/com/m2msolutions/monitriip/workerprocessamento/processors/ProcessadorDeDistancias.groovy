@@ -12,6 +12,9 @@ class ProcessadorDeDistancias implements Processor {
     @Override
     void process(Exchange e) throws Exception {
 
+        if(!existeLocalizacoesInicialEFinal(e))
+            return
+
         def latitudeInicial = e.in.body['localizacaoInicial']['coordinates'][0] as Double
         def longitudeInicial = e.in.body['localizacaoInicial']['coordinates'][1] as Double
 
@@ -20,5 +23,9 @@ class ProcessadorDeDistancias implements Processor {
 
         def distancia = DistanceCalculator.distance latitudeAtual,longitudeAtual,latitudeInicial,longitudeInicial,'K'
         e.setProperty 'distanciaPercorrida',distancia
+    }
+
+    private existeLocalizacoesInicialEFinal(e){
+        e.in.body['localizacaoInicial'] && e.getProperty('originalPayload')['latitude'] && e.getProperty('originalPayload')['longitude']
     }
 }
