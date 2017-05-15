@@ -1,6 +1,8 @@
 {
     "idViagem":"${exchange.properties.payload.idViagem}",
     "idServico":"${exchange.properties.payload.idServico}",
+    "imei":"${exchange.properties.payload.imei}",
+    "pdop":"${exchange.properties.payload.pdop}",
     "identificacaoLinha":"${exchange.properties.payload.identificacaoLinha}",
     "cnpjCliente":"${exchange.properties.payload.cnpjEmpresaTransporte}",
     "dataHoraInicial":"${exchange.properties.payload.dataHoraEvento}",
@@ -12,13 +14,15 @@
     "tipoViagem":"${exchange.properties.tipoViagem}",
     "tipoTransporte":"${exchange.properties.tipoTransporte}",
     "sentidoLinha":"${exchange.properties.sentidoLinha}",
-    "localizacaoInicial":{
-        "type":"POINT",
-        "coordinates":[
-            ${exchange.properties.payload.latitude},
-            ${exchange.properties.payload.longitude}
-        ]
-    },
+    #if ($exchange.properties.payload.latitude and $exchange.properties.payload.longitude)
+        "localizacaoInicial":{
+            "type":"POINT",
+            "coordinates":[
+                ${exchange.properties.payload.latitude},
+                ${exchange.properties.payload.longitude}
+            ]
+        },
+    #end
     "totalBilhetes":0,
     "totalParadas":0,
     "totalKm":0,

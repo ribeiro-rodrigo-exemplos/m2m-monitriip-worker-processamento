@@ -9,13 +9,15 @@
             "dataHoraFinal":"${exchange.properties.payload.dataHoraEvento}",
             "duracao":${exchange.properties.duracao},
             "aberto":false,
-            "localizacaoFinal":{
-                "type":"POINT",
-                "coordinates":[
-                    ${exchange.properties.payload.latitude},
-                    ${exchange.properties.payload.longitude}
-                ]
-            }
+            #if ($exchange.properties.payload.latitude and $exchange.properties.payload.longitude)
+                "localizacaoFinal":{
+                    "type":"POINT",
+                    "coordinates":[
+                        ${exchange.properties.payload.latitude},
+                        ${exchange.properties.payload.longitude}
+                    ]
+                }
+            #end
         }
     }
 ]
