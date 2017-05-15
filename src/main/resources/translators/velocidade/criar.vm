@@ -5,10 +5,10 @@
     },
     {
         $max:{
-            "velocidadeMaxima":${exchange.properties.originalPayload.velocidadeAtual}
             #if ($exchange.properties.distanciaPercorrida)
-                ,"totalKm":${exchange.properties.distanciaPercorrida}
+                "totalKm":${exchange.properties.distanciaPercorrida},
             #end
+            "velocidadeMaxima":${exchange.properties.originalPayload.velocidadeAtual}
         },
         $min:{"velocidadeMinima":${exchange.properties.originalPayload.velocidadeAtual}},
         $push:{

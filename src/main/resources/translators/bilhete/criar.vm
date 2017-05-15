@@ -21,14 +21,16 @@
                 "valorTarifa":${body.valorTarifa},
                 "percentualDesconto":${body.percentualDesconto},
                 "celularPassageiro":"${body.celularPassageiro}",
-                "imei":"${body.imei}",
-                "localizacao":{
-                    "type":"POINT",
-                    "coordinates":[
-                        ${body.latitude},
-                        ${body.longitude}
-                    ]
-                }
+                #if ($body.latitude and $body.longitude)
+                    "localizacao":{
+                        "type":"POINT",
+                        "coordinates":[
+                            ${body.latitude},
+                            ${body.longitude}
+                        ]
+                    },
+                #end
+                "imei":"${body.imei}"
             }
         }
     }

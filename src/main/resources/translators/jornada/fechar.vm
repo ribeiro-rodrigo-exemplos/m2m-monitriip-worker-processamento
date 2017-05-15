@@ -8,14 +8,16 @@
         "dataHoraFinal":"${exchange.properties.payload.dataHoraEvento}",
         "dataFinal":"${exchange.properties.dataFinal}",
         "duracao":${exchange.properties.duracao},
-        "aberto":false,
-        "coordenadasFim":{
-            "type":"POINT",
-            "coordinates":[
-                ${exchange.properties.payload.latitude},
-                ${exchange.properties.payload.longitude}
-            ]
-        }
+        #if ($exchange.properties.payload.latitude and $exchange.properties.payload.longitude)
+            "coordenadasFim":{
+                "type":"POINT",
+                "coordinates":[
+                    ${exchange.properties.payload.latitude},
+                    ${exchange.properties.payload.longitude}
+                ]
+            },
+        #end
+        "aberto":false
       }
     }
 ]

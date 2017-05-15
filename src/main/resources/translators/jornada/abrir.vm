@@ -3,13 +3,15 @@
     "dataHoraInicial":"${body.dataHoraEvento}",
     "dataInicial":"${exchange.properties.dataInicial}",
     "cnpjCliente":"${body.cnpjEmpresaTransporte}",
-    "coordenadasInicio":{
-        "type":"Point",
-        "coordinates":[
-            ${body.latitude},
-            ${body.longitude}
-        ]
-    },
+    #if ($body.latitude and $body.longitude)
+        "coordenadasInicio":{
+            "type":"Point",
+            "coordinates":[
+                ${body.latitude},
+                ${body.longitude}
+            ]
+        },
+    #end
     "cpfMotorista":"${body.cpfMotorista}",
     "placaVeiculo":"${body.placaVeiculo}",
     "idCliente":${body.idCliente},

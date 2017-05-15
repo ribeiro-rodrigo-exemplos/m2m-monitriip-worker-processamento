@@ -6,15 +6,17 @@
     {
         "$push":{
             "paradas":{
-                "motivoParada":"${exchange.properties.motivo}",
                 "dataHora":"${body.dataHoraEvento}",
-                "localizacao":{
-                    "type":"POINT",
-                    "coordinates":[
-                        ${body.latitude},
-                        ${body.longitude}
-                    ]
-                }
+                #if ($body.latitude and $body.longitude)
+                    "localizacao":{
+                        "type":"POINT",
+                        "coordinates":[
+                            ${body.latitude},
+                            ${body.longitude}
+                        ]
+                    },
+                #end
+                "motivoParada":"${exchange.properties.motivo}"
             }
         },
         "$inc":{
