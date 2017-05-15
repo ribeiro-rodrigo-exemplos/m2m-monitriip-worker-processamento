@@ -31,6 +31,8 @@ class VelocidadeLocalizacaoRoute extends RouteBuilder {
 
         from('direct:velocidade-localizacao-route').
             routeId('velocidade-localizacao-route').
+            filter().
+                expression(simple('${body[idViagem]} != null')).
             setProperty('originalPayload',simple('${body}')).
             to('velocity:translators/viagem/consultar-periodo.vm').
             setHeader(MongoDbConstants.FIELDS_FILTER,constant("{'localizacaoInicial.coordinates':1}")).
