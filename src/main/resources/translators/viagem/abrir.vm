@@ -28,7 +28,10 @@
     "totalKm":0,
     "velocidadeMaxima":0,
     "velocidadeMinima":{"$maxKey":1},
-    "direcaoContinuaMaxima":0,
+    "direcaoContinua":{
+        tempoMaximo: 0,
+        cpfMotorista: "${body.cpfMotorista}"
+    },
     "paradas":[],
     "bilhetes":[],
     "localizacoes":[],

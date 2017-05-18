@@ -2,13 +2,13 @@
     {
         "idViagem":"${exchange.properties.originalPayload.idViagem}",
         "idServico":"${exchange.properties.originalPayload.idServico}",
-        "direcaoContinuaMaxima":{
+        "direcaoContinua.tempoMaximo":{
             "$lt":${exchange.properties.originalPayload.tempoDirecao}
         }
     },
     {
         "$set":{
-            "direcaoContinuaMaxima":${exchange.properties.originalPayload.tempoDirecao},
+            "direcaoContinua.tempoMaximo":${exchange.properties.originalPayload.tempoDirecao},
         }
     }
 ]
