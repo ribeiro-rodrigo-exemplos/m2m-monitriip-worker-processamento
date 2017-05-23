@@ -1,5 +1,6 @@
 {
     "idViagem":"${exchange.properties.payload.idViagem}",
+    "idCliente" : ${exchange.properties.payload.idCliente},
     "idServico":"${exchange.properties.payload.idServico}",
     "imei":"${exchange.properties.payload.imei}",
     "pdop":"${exchange.properties.payload.pdop}",

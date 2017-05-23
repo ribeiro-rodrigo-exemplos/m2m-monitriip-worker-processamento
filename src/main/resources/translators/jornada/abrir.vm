@@ -1,5 +1,6 @@
 {
     "idJornada":"${body.idJornada}",
+    "idCliente" : ${body.idCliente},
     "dataHoraInicial":"${body.dataHoraEvento}",
     "dataInicial":"${exchange.properties.dataInicial}",
     "cnpjCliente":"${body.cnpjEmpresaTransporte}",
