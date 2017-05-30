@@ -15,9 +15,7 @@
             "localizacoes":{
                 "dataHoraLocalizacao":"${exchange.properties.originalPayload.dataHoraEvento}",
                 "velocidade":${exchange.properties.originalPayload.velocidadeAtual},
-                #if ($exchange.properties.distanciaPercorrida)
-                    "distanciaPercorrida":${exchange.properties.distanciaPercorrida},
-                #end
+                "distanciaPercorrida":${exchange.properties.originalPayload.distanciaPercorrida},
                 "situacaoIgnicaoMotor":"${exchange.properties.situacaoIgnicaoMotor}",
                 "situacaoPortaVeiculo":"${exchange.properties.situacaoPortaVeiculo}",
                 #if ($exchange.properties.originalPayload.latitude and $exchange.properties.originalPayload.longitude)
