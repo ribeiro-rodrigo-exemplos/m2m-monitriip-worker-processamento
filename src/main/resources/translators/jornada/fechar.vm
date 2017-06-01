@@ -18,6 +18,7 @@
             },
         #end
         "horasPorData":${exchange.properties.horasPorData},
+        "tempoMaximoJornada":${exchange.properties.tempoMaximoJornada},
         "aberto":false
       }
     }

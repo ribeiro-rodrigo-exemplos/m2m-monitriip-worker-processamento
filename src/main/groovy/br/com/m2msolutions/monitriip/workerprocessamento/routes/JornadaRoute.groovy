@@ -52,6 +52,8 @@ class JornadaRoute extends RouteBuilder {
         from('direct:fechar-jornada-route').
             routeId('fechar-jornada').
             setProperty('payload',simple('${body}')).
+            to('sql:classpath:sql/obter-tempo-jornada.sql?dataSource=ssoDb&outputType=SelectOne').
+            setProperty('tempoMaximoJornada',simple('${body[tempo]}')).
             to("velocity:translators/jornada/consultar-jornada.vm").
             setHeader(MongoDbConstants.FIELDS_FILTER,constant('{dataHoraInicial:1,_id:0}')).
             to("mongodb:monitriipDb?database=${dbConfig.monitriip.database}&collection=jornada&operation=findOneByQuery").

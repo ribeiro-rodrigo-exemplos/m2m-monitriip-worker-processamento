@@ -2,6 +2,7 @@ package br.com.m2msolutions.monitriip.workerprocessamento.config
 
 import com.mongodb.Mongo
 import com.mongodb.MongoClient
+import com.mysql.cj.jdbc.MysqlConnectionPoolDataSource
 import org.apache.camel.builder.DeadLetterChannelBuilder
 import org.springframework.boot.context.properties.ConfigurationProperties
 import org.springframework.context.annotation.Bean
@@ -20,9 +21,9 @@ class BeansConfig {
     }
 
     @Bean
-    Mongo frotaDb(){
-        def dbConfig = dbConfig()
-        new MongoClient(dbConfig.frota.host,dbConfig.frota.port as Integer)
+    @ConfigurationProperties(prefix = "databases.sso")
+    MysqlConnectionPoolDataSource ssoDb(){
+        new MysqlConnectionPoolDataSource()
     }
 
     @Bean

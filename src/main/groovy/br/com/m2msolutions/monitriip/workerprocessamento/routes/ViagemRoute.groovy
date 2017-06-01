@@ -49,10 +49,6 @@ class ViagemRoute extends RouteBuilder {
         from('direct:abrir-viagem-route').
             routeId('abrir-viagem-route').
             setProperty('payload',simple('${body}')).
-            to('velocity:translators/viagem/consultar-linha.vm').
-            setHeader(MongoDbConstants.FIELDS_FILTER,constant('{"descr":1}')).
-            to("mongodb:frotaDb?database=${dbConfig.frota.database}&collection=Linha&operation=findOneByQuery").
-            setProperty('linha',simple('${body[descr]}')).
             to('velocity:translators/jornada/consultar-jornada.vm').
             setHeader(MongoDbConstants.FIELDS_FILTER,constant('{"cpfMotorista":1}')).
             to("mongodb:monitriipDb?database=${dbConfig.monitriip.database}&collection=jornada&operation=findOneByQuery").

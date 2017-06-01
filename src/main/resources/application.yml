@@ -11,10 +11,12 @@ camel:
     main-run-controller: true
 
 databases:
-  frota:
-    host: localhost
-    port: 27017
-    database: test
+  sso:
+    url: jdbc:mysql://localhost/sso?useTimezone=true&serverTimezone=America/Sao_Paulo
+    user: frota
+    password: frota
+    port: 3306
+    database: sso
   monitriip:
     host: localhost
     port: 27017
