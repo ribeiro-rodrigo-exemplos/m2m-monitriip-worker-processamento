@@ -20,6 +20,5 @@
     #end
     "cpfMotorista":"${body.cpfMotorista}",
     "placaVeiculo":"${body.placaVeiculo}",
-    "idCliente":${body.idCliente},
     "aberto":true
 }

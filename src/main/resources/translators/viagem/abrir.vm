@@ -10,7 +10,6 @@
     "dataInicial":"${exchange.properties.dataInicial}",
     "cpfMotorista":"${body.cpfMotorista}",
     "placaVeiculo":"${exchange.properties.payload.placaVeiculo}",
-    "idCliente":"${exchange.properties.payload.idCliente}",
     "tipoViagem":"${exchange.properties.tipoViagem}",
     "tipoTransporte":"${exchange.properties.tipoTransporte}",
     "sentidoLinha":"${exchange.properties.sentidoLinha}",
