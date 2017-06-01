@@ -13,6 +13,11 @@
             ]
         },
     #end
+    #if($exchange.properties.nomeMotorista)
+        "nomeMotorista":"${exchange.properties.nomeMotorista}",
+    #else
+        "nomeMotorista":null,
+    #end
     "cpfMotorista":"${body.cpfMotorista}",
     "placaVeiculo":"${body.placaVeiculo}",
     "idCliente":${body.idCliente},

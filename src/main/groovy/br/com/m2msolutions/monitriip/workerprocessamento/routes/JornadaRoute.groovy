@@ -42,6 +42,10 @@ class JornadaRoute extends RouteBuilder {
 
         from('direct:abrir-jornada-route').
             routeId('abrir-jornada').
+            setProperty('payload',simple('${body}')).
+            to('sql:classpath:sql/obter-nome-motorista.sql?dataSource=frotaDb&outputType=SelectOne').
+            setProperty('nomeMotorista',simple('${body}')).
+            setBody(simple('${property.payload}')).
             process({e ->
                 e.setProperty 'dataInicial', DateUtil.formatarData(e.in.body['dataHoraEvento'] as String)
             }).

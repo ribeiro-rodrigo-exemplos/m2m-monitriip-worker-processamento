@@ -7,6 +7,7 @@ import org.apache.camel.builder.DeadLetterChannelBuilder
 import org.springframework.boot.context.properties.ConfigurationProperties
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
+import org.springframework.context.annotation.Primary
 
 /**
  * Created by rodrigo on 04/04/17.
@@ -21,8 +22,15 @@ class BeansConfig {
     }
 
     @Bean
+    @Primary
     @ConfigurationProperties(prefix = "databases.sso")
     MysqlConnectionPoolDataSource ssoDb(){
+        new MysqlConnectionPoolDataSource()
+    }
+
+    @Bean
+    @ConfigurationProperties(prefix = "databases.frota")
+    MysqlConnectionPoolDataSource frotaDb(){
         new MysqlConnectionPoolDataSource()
     }
 
