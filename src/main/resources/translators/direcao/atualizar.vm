@@ -8,7 +8,10 @@
     },
     {
         "$set":{
-            "direcaoContinua.tempoMaximo":${exchange.properties.originalPayload.tempoDirecao},
+            #if($exchange.properties.tempoMaximoDirecao)
+                "direcaoContinua.tempoMaximoPermitido":${exchange.properties.tempoMaximoDirecao},
+            #end
+            "direcaoContinua.tempoMaximo":${exchange.properties.originalPayload.tempoDirecao}
         }
     }
 ]

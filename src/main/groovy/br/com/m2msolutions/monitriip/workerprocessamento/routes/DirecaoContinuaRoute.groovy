@@ -33,6 +33,9 @@ class DirecaoContinuaRoute extends RouteBuilder {
         from('direct:direcao-continua-route').
             routeId('direcao-continua-route').
             setProperty('originalPayload',simple('${body}')).
+            to('sql:classpath:sql/obter-tempo-direcao-continua.sql?dataSource=ssoDb&outputType=SelectOne').
+            setProperty('tempoMaximoDirecao',simple('${body[tempo]}')).
+            setBody(simple('${property.originalPayload}')).
             to('velocity:translators/viagem/consultar-periodo.vm').
             setHeader(MongoDbConstants.FIELDS_FILTER,constant("{'_id':1}")).
             to("mongodb:monitriipDb?database=${dbConfig.monitriip.database}&collection=viagem&operation=findOneByQuery").
