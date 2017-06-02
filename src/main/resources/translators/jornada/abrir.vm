@@ -8,8 +8,8 @@
         "coordenadasInicio":{
             "type":"Point",
             "coordinates":[
-                ${body.latitude},
-                ${body.longitude}
+                ${body.longitude},
+                ${body.latitude}
             ]
         },
     #end

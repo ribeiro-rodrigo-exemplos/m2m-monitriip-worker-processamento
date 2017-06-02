@@ -1,7 +1,7 @@
 [
     {
         "idViagem":"${body.idViagem}",
-        "idServico":"${body.idServico}"
+        "idJornada":"${body.idJornada}"
     },
     {
         "$push":{
@@ -11,8 +11,8 @@
                     "localizacao":{
                         "type":"POINT",
                         "coordinates":[
-                            ${body.latitude},
-                            ${body.longitude}
+                            ${body.longitude},
+                            ${body.latitude}
                         ]
                     },
                 #end

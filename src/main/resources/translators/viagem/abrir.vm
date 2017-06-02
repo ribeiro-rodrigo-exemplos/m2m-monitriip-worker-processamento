@@ -1,7 +1,7 @@
 {
     "idViagem":"${exchange.properties.payload.idViagem}",
     "idCliente" : ${exchange.properties.payload.idCliente},
-    "idServico":"${exchange.properties.payload.idServico}",
+    "idJornada":"${exchange.properties.payload.idJornada}",
     "imei":"${exchange.properties.payload.imei}",
     "pdop":"${exchange.properties.payload.pdop}",
     "identificacaoLinha":"${exchange.properties.payload.identificacaoLinha}",
@@ -17,8 +17,8 @@
         "localizacaoInicial":{
             "type":"POINT",
             "coordinates":[
-                ${exchange.properties.payload.latitude},
-                ${exchange.properties.payload.longitude}
+                ${exchange.properties.payload.longitude},
+                ${exchange.properties.payload.latitude}
             ]
         },
     #end

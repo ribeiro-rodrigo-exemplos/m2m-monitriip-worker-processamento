@@ -1,2 +1,2 @@
-select id_cliente,tempo from direcao_continua
+select id_cliente,nu_max_minutos as tempo from direcao_continua
   where id_cliente=:#${property.originalPayload[idCliente]}

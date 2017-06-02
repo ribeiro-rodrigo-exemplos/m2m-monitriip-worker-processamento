@@ -12,17 +12,17 @@ camel:
 
 databases:
   sso:
-    url: jdbc:mysql://localhost/sso?useTimezone=true&serverTimezone=America/Sao_Paulo
+    url: jdbc:mysql://mysql-hml/sso?useTimezone=true&serverTimezone=America/Sao_Paulo
     user: frota
     password: frota
     port: 3306
     database: sso
   frota:
-    url: jdbc:mysql://localhost/frota_zn4?useTimezone=true&serverTimezone=America/Sao_Paulo
+    url: jdbc:mysql://mysql-hml/frota_znh?useTimezone=true&serverTimezone=America/Sao_Paulo
     user: frota
     password: frota
     port: 3306
-    database: frota_zn4
+    database: frota_znh
   monitriip:
     host: localhost
     port: 27017

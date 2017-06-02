@@ -17,6 +17,8 @@ class ProcessadorDePeriodos implements Processor {
     @Autowired
     PeriodCalculator periodCalculator
 
+
+
     @Override
     void process(Exchange e) throws Exception {
 

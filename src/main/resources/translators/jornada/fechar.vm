@@ -12,8 +12,8 @@
             "coordenadasFim":{
                 "type":"POINT",
                 "coordinates":[
-                    ${exchange.properties.payload.latitude},
-                    ${exchange.properties.payload.longitude}
+                    ${exchange.properties.payload.longitude},
+                    ${exchange.properties.payload.latitude}
                 ]
             },
         #end

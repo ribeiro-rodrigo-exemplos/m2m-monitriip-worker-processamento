@@ -1,2 +1,2 @@
-select id_cliente,tempo from jornada_de_trabalho as jornada
+select id_cliente,nu_max_minutos as tempo from jornada_trabalho as jornada
   where id_cliente=:#${property.payload[idCliente]}

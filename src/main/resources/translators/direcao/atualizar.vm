@@ -1,7 +1,7 @@
 [
     {
         "idViagem":"${exchange.properties.originalPayload.idViagem}",
-        "idServico":"${exchange.properties.originalPayload.idServico}",
+        "idJornada":"${exchange.properties.originalPayload.idJornada}",
         "direcaoContinua.tempoMaximo":{
             "$lt":${exchange.properties.originalPayload.tempoDirecao}
         }

@@ -1,7 +1,7 @@
 [
     {
         "idViagem":"${exchange.properties.originalPayload.idViagem}",
-        "idServico":"${exchange.properties.originalPayload.idServico}"
+        "idJornada":"${exchange.properties.originalPayload.idJornada}"
     },
     {
         $max:{
@@ -22,8 +22,8 @@
                     "localizacao":{
                         "type":"POINT",
                         "coordinates":[
-                            ${exchange.properties.originalPayload.latitude},
-                            ${exchange.properties.originalPayload.longitude}
+                            ${exchange.properties.originalPayload.longitude},
+                            ${exchange.properties.originalPayload.latitude}
                         ]
                     }
                 #end

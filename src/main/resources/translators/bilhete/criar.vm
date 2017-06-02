@@ -1,7 +1,7 @@
 [
     {
         "idViagem":"${body.idViagem}",
-        "idServico":"${body.idServico}"
+        "idJornada":"${body.idJornada}"
     },
     {
         "$inc":{
@@ -10,7 +10,7 @@
         "$push":{
             "bilhetes":{
                 "idViagem":"${body.idViagem}",
-                "idServico":"${body.idServico}",
+                "idJornada":"${body.idJornada}",
                 "dataHoraEvento":"${body.dataHoraEvento}",
                 "numeroEquipamento":"${body.dataHoraEvento}",
                 "numeroBilheteEmbarque":"${body.numeroEquipamento}",
@@ -25,8 +25,8 @@
                     "localizacao":{
                         "type":"POINT",
                         "coordinates":[
-                            ${body.latitude},
-                            ${body.longitude}
+                            ${body.longitude},
+                            ${body.latitude}
                         ]
                     },
                 #end
