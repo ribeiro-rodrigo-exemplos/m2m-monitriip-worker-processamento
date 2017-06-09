@@ -13,7 +13,7 @@
                 "idJornada":"${body.idJornada}",
                 "dataHoraEvento":"${body.dataHoraEvento}",
                 "numeroEquipamento":"${body.dataHoraEvento}",
-                "numeroBilheteEmbarque":"${body.numeroEquipamento}",
+                "numeroBilheteEmbarque":"${body.numeroBilheteEmbarque}",
                 "identificacaoLinha":"${body.identificacaoLinha}",
                 "dataPrevistaViagem":"${body.dataPrevistaViagem}",
                 "horaPrevistaViagem":"${body.horaPrevistaViagem}",

@@ -15,8 +15,8 @@ class ProcessadorDeDistancias implements Processor {
         if(!existeLocalizacoesInicialEFinal(e))
             return
 
-        def latitudeInicial = e.in.body['localizacaoInicial']['coordinates'][0] as Double
-        def longitudeInicial = e.in.body['localizacaoInicial']['coordinates'][1] as Double
+        def latitudeInicial = e.in.body['localizacaoInicial']['coordinates'][1] as Double
+        def longitudeInicial = e.in.body['localizacaoInicial']['coordinates'][0] as Double
 
         def latitudeAtual = e.getProperty('originalPayload')['latitude'] as Double
         def longitudeAtual = e.getProperty('originalPayload')['longitude'] as Double
