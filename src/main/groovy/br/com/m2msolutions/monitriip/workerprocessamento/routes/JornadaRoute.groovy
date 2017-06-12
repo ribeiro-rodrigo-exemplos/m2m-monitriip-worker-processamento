@@ -50,7 +50,13 @@ class JornadaRoute extends RouteBuilder {
                 e.setProperty 'dataInicial', DateUtil.formatarData(e.in.body['dataHoraEvento'] as String)
             }).
             to('velocity:translators/jornada/abrir.vm').
-            to("mongodb:monitriipDb?database=${dbConfig.monitriip.database}&collection=jornada&operation=insert").
+            to("mongodb:monitriipDb?database=${dbConfig.monitriip.database}&collection=jornada&operation=save").
+            setBody(simple('${property.payload}')).
+            choice().
+                when().expression(simple('${body[idViagem]} != null')).
+                    process('processadorDeJornadas').
+                    to('direct:viagem-route').
+            endChoice().
         end()
 
         from('direct:fechar-jornada-route').
@@ -74,6 +80,12 @@ class JornadaRoute extends RouteBuilder {
             to('velocity:translators/jornada/fechar.vm').
             convertBodyTo(DBObject).
             to("mongodb:monitriipDb?database=${dbConfig.monitriip.database}&collection=jornada&operation=update").
+            setBody(simple('${property.payload}')).
+            choice().
+                when(simple('${body[idViagem]} != null')).
+                    process('processadorDeJornadas').
+                    to('direct:viagem-route').
+            endChoice().
         end()
     }
 }
