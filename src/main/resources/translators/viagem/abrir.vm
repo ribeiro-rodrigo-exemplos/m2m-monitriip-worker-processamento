@@ -47,5 +47,8 @@
         "DEFEITO_NO_VEICULO":0,
         "TROCA_PROGRAMADA_DE_VEICULO":0,
         "OUTRO":0
-    }
+    },
+    "codigoTipoViagem":"${exchange.properties.payload.codigoTipoViagem}",
+    "codigoSentidoLinha":"${exchange.properties.payload.codigoSentidoLinha}",
+
 }

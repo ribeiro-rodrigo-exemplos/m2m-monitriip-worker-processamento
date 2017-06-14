@@ -54,8 +54,7 @@ class JornadaRoute extends RouteBuilder {
             setBody(simple('${property.payload}')).
             choice().
                 when().expression(simple('${body[idViagem]} != null')).
-                    process('processadorDeJornadas').
-                    to('direct:viagem-route').
+                    to("direct:converter-jornada-viagem").
             endChoice().
         end()
 
@@ -83,9 +82,17 @@ class JornadaRoute extends RouteBuilder {
             setBody(simple('${property.payload}')).
             choice().
                 when(simple('${body[idViagem]} != null')).
-                    process('processadorDeJornadas').
-                    to('direct:viagem-route').
+                    to("direct:converter-jornada-viagem").
             endChoice().
+        end()
+
+        from('direct:converter-jornada-viagem').
+            to("velocity:translators/viagem/consultar-viagem.vm").
+            removeHeader(MongoDbConstants.FIELDS_FILTER).
+            to("mongodb:monitriipDb?database=${dbConfig.monitriip.database}&collection=viagem&operation=findOneByQuery").
+            process('processadorDeJornadas').
+            log('${body}').
+            to('direct:viagem-route').
         end()
     }
 }
