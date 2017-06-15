@@ -37,6 +37,7 @@ rabbitmq:
   username: guest
   password: guest
   fallback-delay: 60000
+  concurrentConsumers: 10
 
 logging:
   file: /var/log/m2m-monitriip-worker-processamento.log
