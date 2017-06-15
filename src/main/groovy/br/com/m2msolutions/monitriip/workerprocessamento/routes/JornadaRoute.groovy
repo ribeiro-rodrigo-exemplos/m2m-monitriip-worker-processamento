@@ -91,7 +91,6 @@ class JornadaRoute extends RouteBuilder {
             removeHeader(MongoDbConstants.FIELDS_FILTER).
             to("mongodb:monitriipDb?database=${dbConfig.monitriip.database}&collection=viagem&operation=findOneByQuery").
             process('processadorDeJornadas').
-            log('${body}').
             to('direct:viagem-route').
         end()
     }

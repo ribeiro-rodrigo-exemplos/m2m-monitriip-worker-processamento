@@ -26,10 +26,12 @@ class ProcessadorDeJornadas implements Processor {
         else
             payload['tipoRegistroViagem'] = 0
 
-        payload['codigoTipoViagem'] = viagem['codigoTipoViagem']
-        payload['codigoSentidoLinha'] = viagem['codigoSentidoLinha']
-        payload['identificacaoLinha'] = viagem['identificacaoLinha']
-        payload['tipoTransporte'] = viagem['idLog']
+        def logInfo = viagem['logInfo']
+
+        logInfo?.each{
+            key,value ->
+                payload[key] = value
+        }
 
         exchange.in.body = payload
     }

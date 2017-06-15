@@ -76,7 +76,7 @@ class ViagemRoute extends RouteBuilder {
             to("mongodb:monitriipDb?database=${dbConfig.monitriip.database}&collection=viagem&operation=findOneByQuery").
             process{
                 if(!it.in.body){
-                    def message = "Jornada ${it.getProperty('payload')['idViagem']} não foi encontrada."
+                    def message = "Viagem ${it.getProperty('payload')['idViagem']} não foi encontrada."
                     throw new ViagemNaoEncontradaException(message)
                 }
             }.

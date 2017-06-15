@@ -48,7 +48,9 @@
         "TROCA_PROGRAMADA_DE_VEICULO":0,
         "OUTRO":0
     },
-    "codigoTipoViagem":"${exchange.properties.payload.codigoTipoViagem}",
-    "codigoSentidoLinha":"${exchange.properties.payload.codigoSentidoLinha}",
-
+    "logInfo":{
+        "codigoTipoViagem":${exchange.properties.payload.codigoTipoViagem},
+        "codigoSentidoLinha":${exchange.properties.payload.codigoSentidoLinha},
+        "idLog":${exchange.properties.payload.idLog}
+    }
 }
