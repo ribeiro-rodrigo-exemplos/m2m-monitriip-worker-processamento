@@ -9,28 +9,41 @@
         },
         "$push":{
             "bilhetes":{
-                "idViagem":"${body.idViagem}",
-                "idJornada":"${body.idJornada}",
-                "dataHoraEvento":"${body.dataHoraEvento}",
-                "numeroEquipamento":"${body.numeroEquipamento}",
-                "numeroBilheteEmbarque":"${body.numeroBilheteEmbarque}",
-                "identificacaoLinha":"${body.identificacaoLinha}",
-                "dataPrevistaViagem":"${body.dataPrevistaViagem}",
-                "horaPrevistaViagem":"${body.horaPrevistaViagem}",
-                "codigoDesconto":"${body.codigoDesconto}",
-                "valorTarifa":${body.valorTarifa},
-                "percentualDesconto":${body.percentualDesconto},
-                "celularPassageiro":"${body.celularPassageiro}",
-                #if ($body.latitude and $body.longitude)
-                    "localizacao":{
-                        "type":"POINT",
-                        "coordinates":[
-                            ${body.longitude},
-                            ${body.latitude}
-                        ]
-                    },
-                #end
-                "imei":"${body.imei}"
+                "$each":[
+                    #set($bilhetes = $body.bilhetes)
+                    #set($count = $body.bilhetes.size() - 1)
+                    #foreach($bilhete in $bilhetes)
+                        {
+                            "idViagem":"${body.idViagem}",
+                            "idJornada":"${body.idJornada}",
+                            "idCliente":"${body.idCliente}",
+                            "dataHoraEvento":"${body.dataHoraEvento}",
+                            "dataHoraAberturaPorta":"${body.dataHoraAberturaPorta}",
+                            "numeroEquipamento":"${bilhete.numeroEquipamento}",
+                            "numeroBilheteEmbarque":"${bilhete.numeroBilheteEmbarque}",
+                            "identificacaoLinha":"${bilhete.identificacaoLinha}",
+                            "dataPrevistaViagem":"${bilhete.dataPrevistaViagem}",
+                            "horaPrevistaViagem":"${bilhete.horaPrevistaViagem}",
+                            "codigoDesconto":0,
+                            "valorTarifa":0,
+                            "percentualDesconto":0,
+                            "celularPassageiro":"",
+                            #if ($body.latitude and $body.longitude)
+                                "localizacao":{
+                                    "type":"POINT",
+                                    "coordinates":[
+                                        ${body.longitude},
+                                        ${body.latitude}
+                                    ]
+                                },
+                            #end
+                            "imei":"${body.imei}"
+                        }
+                        #if($foreach.index < $count)
+                            ,
+                        #end
+                    #end
+                ]
             }
         }
     }
