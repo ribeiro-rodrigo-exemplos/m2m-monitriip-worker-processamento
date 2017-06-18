@@ -26,6 +26,8 @@ class ProcessadorDeJornadas implements Processor {
         else
             payload['tipoRegistroViagem'] = 0
 
+        payload['dataInicialViagem'] = viagem['dataInicialViagem']
+
         def logInfo = viagem['logInfo']
 
         logInfo?.each{

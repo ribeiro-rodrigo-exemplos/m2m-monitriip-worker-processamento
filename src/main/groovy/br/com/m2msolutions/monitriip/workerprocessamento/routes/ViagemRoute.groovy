@@ -63,6 +63,8 @@ class ViagemRoute extends RouteBuilder {
             process{
                 e ->
                     e.setProperty 'dataInicial', DateUtil.formatarData(e.getProperty('payload')['dataHoraEvento'] as String)
+                    def dataInicialViagem = e.getProperty('payload')['dataInicialViagem']
+                    e.setProperty('dataInicialViagem', dataInicialViagem ? dataInicialViagem : e.getProperty('dataInicial'))
             }.
             to('velocity:translators/viagem/abrir.vm').
             to("mongodb:monitriipDb?database=${dbConfig.monitriip.database}&collection=viagem&operation=insert").

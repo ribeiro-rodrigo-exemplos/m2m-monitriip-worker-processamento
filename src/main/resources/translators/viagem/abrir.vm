@@ -6,6 +6,7 @@
     "pdop":"${exchange.properties.payload.pdop}",
     "identificacaoLinha":"${exchange.properties.payload.identificacaoLinha}",
     "cnpjCliente":"${exchange.properties.payload.cnpjEmpresaTransporte}",
+    "dataInicialViagem":"${exchange.properties.dataInicialViagem}",
     "dataHoraInicial":"${exchange.properties.payload.dataHoraEvento}",
     "dataInicial":"${exchange.properties.dataInicial}",
     "cpfMotorista":"${body.cpfMotorista}",
