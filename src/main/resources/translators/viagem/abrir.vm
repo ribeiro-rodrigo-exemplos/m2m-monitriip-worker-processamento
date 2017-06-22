@@ -4,7 +4,11 @@
     "idJornada":"${exchange.properties.payload.idJornada}",
     "imei":"${exchange.properties.payload.imei}",
     "pdop":"${exchange.properties.payload.pdop}",
-    "identificacaoLinha":"${exchange.properties.payload.identificacaoLinha}",
+    #if($exchange.properties.payload.identificacaoLinha)
+        "identificacaoLinha":"${exchange.properties.payload.identificacaoLinha}",
+    #else
+        "identificacaoLinha":"${exchange.properties.payload.autorizacaoViagem}",
+    #end
     "cnpjCliente":"${exchange.properties.payload.cnpjEmpresaTransporte}",
     "dataInicialViagem":"${exchange.properties.dataInicialViagem}",
     "dataHoraInicial":"${exchange.properties.payload.dataHoraEvento}",
@@ -50,8 +54,16 @@
         "OUTRO":0
     },
     "logInfo":{
-        "codigoTipoViagem":${exchange.properties.payload.codigoTipoViagem},
-        "codigoSentidoLinha":${exchange.properties.payload.codigoSentidoLinha},
+        #if($exchange.properties.payload.codigoTipoViagem)
+            "codigoTipoViagem":${exchange.properties.payload.codigoTipoViagem},
+        #end
+        #if($exchange.properties.payload.codigoSentidoLinha)
+            "codigoSentidoLinha":${exchange.properties.payload.codigoSentidoLinha},
+        #end
+        #if($exchange.properties.payload.sentidoLinha)
+            "sentidoLinha":"${exchange.properties.payload.sentidoLinha}",
+        #end
         "idLog":${exchange.properties.payload.idLog}
+
     }
 }

@@ -4,7 +4,7 @@ package br.com.m2msolutions.monitriip.workerprocessamento.enums
  */
 enum TipoViagem {
 
-    REGULAR(0),EXTRA(1)
+    REGULAR(0),EXTRA(1),FRETADA(2)
 
     private static tipos
 

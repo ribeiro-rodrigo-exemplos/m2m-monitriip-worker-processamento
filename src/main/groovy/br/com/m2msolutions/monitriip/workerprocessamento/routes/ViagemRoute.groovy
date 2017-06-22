@@ -39,9 +39,9 @@ class ViagemRoute extends RouteBuilder {
         from('direct:viagem-route').
             routeId('viagem-route').
             choice().
-                when().expression(simple('${body[tipoRegistroViagem]} == 1')).
+                when().expression(simple('${body[tipoRegistroViagem]} == 1 || ${body[tipoRegistroViagem]} == 3')).
                     to('direct:abrir-viagem-route').
-                when().expression(simple('${body[tipoRegistroViagem]} == 0')).
+                when().expression(simple('${body[tipoRegistroViagem]} == 0 || ${body[tipoRegistroViagem]} == 2')).
                     to('direct:fechar-viagem-route').
             endChoice().
         end()
