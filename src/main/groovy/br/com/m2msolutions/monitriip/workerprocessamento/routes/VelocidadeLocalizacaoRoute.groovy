@@ -37,17 +37,13 @@ class VelocidadeLocalizacaoRoute extends RouteBuilder {
             to('velocity:translators/viagem/consultar-periodo.vm').
             setHeader(MongoDbConstants.FIELDS_FILTER,constant("{'localizacaoInicial.coordinates':1}")).
             to("mongodb:monitriipDb?database=${dbConfig.monitriip.database}&collection=viagem&operation=findOneByQuery").
-            process({
-                if(!it.in.body){
-                    def message = "Viagem ${it.getProperty('originalPayload')['idViagem']} não foi encontrada."
-                    throw new ViagemNaoEncontradaException(message)
-                }
-            }).
-            process('processadorDeDistancias').
-            process('velocidadeLocalizacaoMessagingMapper').
-            to('velocity:translators/velocidade/criar.vm').
-            convertBodyTo(DBObject).
-            to("mongodb:monitriipDb?database=${dbConfig.monitriip.database}&collection=viagem&operation=update").
+            filter().
+                expression(simple('${body} != null')).
+                    process('processadorDeDistancias').
+                    process('velocidadeLocalizacaoMessagingMapper').
+                    to('velocity:translators/velocidade/criar.vm').
+                    convertBodyTo(DBObject).
+                    to("mongodb:monitriipDb?database=${dbConfig.monitriip.database}&collection=viagem&operation=update").
         end()
 
     }
