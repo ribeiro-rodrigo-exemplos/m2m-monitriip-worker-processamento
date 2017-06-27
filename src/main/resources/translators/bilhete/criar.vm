@@ -1,3 +1,5 @@
+#set($bilhetes = $body.bilhetes)
+#set($count = $body.bilhetes.size() - 1)
 [
     {
         "idViagem":"${body.idViagem}",
@@ -5,13 +7,11 @@
     },
     {
         "$inc":{
-            "totalBilhetes":1
+            "totalBilhetes":${bilhetes.size()}
         },
         "$push":{
             "bilhetes":{
                 "$each":[
-                    #set($bilhetes = $body.bilhetes)
-                    #set($count = $body.bilhetes.size() - 1)
                     #foreach($bilhete in $bilhetes)
                         {
                             "idViagem":"${body.idViagem}",

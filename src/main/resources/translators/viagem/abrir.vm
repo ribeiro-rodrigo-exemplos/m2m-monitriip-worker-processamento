@@ -1,29 +1,29 @@
 {
-    "idViagem":"${exchange.properties.payload.idViagem}",
-    "idCliente" : ${exchange.properties.payload.idCliente},
-    "idJornada":"${exchange.properties.payload.idJornada}",
-    "imei":"${exchange.properties.payload.imei}",
-    "pdop":"${exchange.properties.payload.pdop}",
-    #if($exchange.properties.payload.identificacaoLinha)
-        "identificacaoLinha":"${exchange.properties.payload.identificacaoLinha}",
+    "idViagem":"${body.idViagem}",
+    "idCliente" : ${body.idCliente},
+    "idJornada":"${body.idJornada}",
+    "imei":"${body.imei}",
+    "pdop":"${body.pdop}",
+    #if($body.identificacaoLinha)
+        "identificacaoLinha":"${body.identificacaoLinha}",
     #else
-        "identificacaoLinha":"${exchange.properties.payload.autorizacaoViagem}",
+        "identificacaoLinha":"${body.autorizacaoViagem}",
     #end
-    "cnpjCliente":"${exchange.properties.payload.cnpjEmpresaTransporte}",
+    "cnpjCliente":"${body.cnpjEmpresaTransporte}",
     "dataInicialViagem":"${exchange.properties.dataInicialViagem}",
-    "dataHoraInicial":"${exchange.properties.payload.dataHoraEvento}",
+    "dataHoraInicial":"${body.dataHoraEvento}",
     "dataInicial":"${exchange.properties.dataInicial}",
     "cpfMotorista":"${body.cpfMotorista}",
-    "placaVeiculo":"${exchange.properties.payload.placaVeiculo}",
+    "placaVeiculo":"${body.placaVeiculo}",
     "tipoViagem":"${exchange.properties.tipoViagem}",
     "tipoTransporte":"${exchange.properties.tipoTransporte}",
     "sentidoLinha":"${exchange.properties.sentidoLinha}",
-    #if ($exchange.properties.payload.latitude and $exchange.properties.payload.longitude)
+    #if ($body.latitude and $body.longitude)
         "localizacaoInicial":{
             "type":"POINT",
             "coordinates":[
-                ${exchange.properties.payload.longitude},
-                ${exchange.properties.payload.latitude}
+                ${body.longitude},
+                ${body.latitude}
             ]
         },
     #end
@@ -54,16 +54,16 @@
         "OUTRO":0
     },
     "logInfo":{
-        #if($exchange.properties.payload.codigoTipoViagem)
-            "codigoTipoViagem":${exchange.properties.payload.codigoTipoViagem},
+        #if($body.codigoTipoViagem)
+            "codigoTipoViagem":${body.codigoTipoViagem},
         #end
-        #if($exchange.properties.payload.codigoSentidoLinha)
-            "codigoSentidoLinha":${exchange.properties.payload.codigoSentidoLinha},
+        #if($body.codigoSentidoLinha)
+            "codigoSentidoLinha":${body.codigoSentidoLinha},
         #end
-        #if($exchange.properties.payload.sentidoLinha)
-            "sentidoLinha":"${exchange.properties.payload.sentidoLinha}",
+        #if($body.sentidoLinha)
+            "sentidoLinha":"${body.sentidoLinha}",
         #end
-        "idLog":${exchange.properties.payload.idLog}
+        "idLog":${body.idLog}
 
     }
 }
