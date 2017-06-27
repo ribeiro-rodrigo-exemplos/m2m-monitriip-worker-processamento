@@ -21,14 +21,6 @@ class VelocidadeLocalizacaoRoute extends RouteBuilder {
     @Override
     void configure() throws Exception {
 
-        onException(ViagemNaoEncontradaException).
-            log(LoggingLevel.WARN,"${this.class.simpleName}",'${exception.message} - id: ${id}').
-            maximumRedeliveries(0).
-            logExhaustedMessageHistory(false).
-            useOriginalMessage().
-            to("direct:fallback-route").
-        end()
-
         from('direct:velocidade-localizacao-route').
             routeId('velocidade-localizacao-route').
             filter().

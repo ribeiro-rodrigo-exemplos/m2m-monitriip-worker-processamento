@@ -18,7 +18,7 @@ class ViagemMessagingMapper implements Processor{
     @Override
     void process(Exchange e) throws Exception {
 
-        def payload  = e.getProperty 'payload',DBObject
+        def payload  = e.in.body
 
         e.setProperty 'tipoViagem',payload['codigoTipoViagem'] ? TipoViagem.obterTipo(payload['codigoTipoViagem']) : TipoViagem.obterTipo(2)
         e.setProperty 'sentidoLinha',Sentido.obterSentido(payload['codigoSentidoLinha'] ? payload['codigoSentidoLinha'] : payload['sentidoLinha'])

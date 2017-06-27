@@ -22,6 +22,7 @@ class GatewayRoute extends RouteBuilder {
                 "&deadLetterQueue=${rcfg.deadLetterQueue}&deadLetterRoutingKey=dead.letters&autoAck=false&" +
                 "autoDelete=false&concurrentConsumers=${rcfg.concurrentConsumers}&username=${rcfg.username}" +
                 "&password=${rcfg.password}").
+            setProperty('payloadBackup',simple('${body}')).
             unmarshal().string().
             convertBodyTo(Map).
             choice().

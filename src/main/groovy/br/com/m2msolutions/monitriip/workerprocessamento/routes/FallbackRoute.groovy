@@ -21,6 +21,8 @@ class FallbackRoute extends RouteBuilder {
 
         from('direct:fallback-route').
             routeId('fallback-route').
+            setHeader('rabbitmq.REQUEUE').constant(true).
+            setBody(simple('${property.payloadBackup}')).
             log(LoggingLevel.WARN,"${this.class.simpleName}",'${id}').
             delay(rcfg['fallback-delay'] as Integer).
             to("rabbitmq://${rcfg.url}/${rcfg.exchange}?queue=${rcfg.queue}&durable=true&autoDelete=false&" +

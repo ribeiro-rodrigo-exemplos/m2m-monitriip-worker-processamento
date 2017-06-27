@@ -22,14 +22,6 @@ class DirecaoContinuaRoute extends RouteBuilder {
     @Override
     void configure() throws Exception {
 
-        onException(ViagemNaoEncontradaException).
-            log(LoggingLevel.WARN,"${this.class.simpleName}",'${exception.message} - id: ${id}').
-            maximumRedeliveries(0).
-            logExhaustedMessageHistory(false).
-            useOriginalMessage().
-            to("direct:fallback-route").
-        end()
-
         from('direct:direcao-continua-route').
             routeId('direcao-continua-route').
             setProperty('originalPayload',simple('${body}')).
@@ -39,15 +31,11 @@ class DirecaoContinuaRoute extends RouteBuilder {
             to('velocity:translators/viagem/consultar-periodo.vm').
             setHeader(MongoDbConstants.FIELDS_FILTER,constant("{'_id':1}")).
             to("mongodb:monitriipDb?database=${dbConfig.monitriip.database}&collection=viagem&operation=findOneByQuery").
-            process({
-                if(!it.in.body){
-                    def message = "Viagem ${it.getProperty('originalPayload')['idViagem']} não foi encontrada."
-                    throw new ViagemNaoEncontradaException(message)
-                }
-            }).
-            to('velocity:translators/direcao/atualizar.vm').
-            convertBodyTo(DBObject).
-            to("mongodb:monitriipDb?database=${dbConfig.monitriip.database}&collection=viagem&operation=update").
+            filter().
+                expression(simple('${body} != null')).
+                    to('velocity:translators/direcao/atualizar.vm').
+                    convertBodyTo(DBObject).
+                    to("mongodb:monitriipDb?database=${dbConfig.monitriip.database}&collection=viagem&operation=update").
         end()
     }
 }

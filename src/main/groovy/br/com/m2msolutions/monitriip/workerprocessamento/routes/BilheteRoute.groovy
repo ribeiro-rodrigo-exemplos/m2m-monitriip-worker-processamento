@@ -22,26 +22,12 @@ class BilheteRoute extends RouteBuilder {
     @Override
     void configure() throws Exception {
 
-        onException(ViagemNaoEncontradaException).
-            log(LoggingLevel.WARN,"${this.class.simpleName}",'${exception.message} - id: ${id}').
-            maximumRedeliveries(0).
-            logExhaustedMessageHistory(false).
-            useOriginalMessage().
-            to("direct:fallback-route").
-        end()
-
         from("direct:bilhete-route").
             routeId('bilhete-route').
             setProperty('idViagem',simple('${body[idViagem]}')).
             to('velocity:translators/bilhete/criar.vm').
             convertBodyTo(DBObject).
             to("mongodb:monitriipDb?database=${dbConfig.monitriip.database}&collection=viagem&operation=update").
-            process({
-                if(!it.in.body["matchedCount"]){
-                    def message = "Viagem ${it.getProperty('idViagem')} não foi encontrada."
-                    throw new ViagemNaoEncontradaException(message)
-                }
-            }).
         end()
     }
 }
