@@ -1,6 +1,5 @@
 package br.com.m2msolutions.monitriip.workerprocessamento.routes
 
-import br.com.m2msolutions.monitriip.workerprocessamento.exceptions.ViagemNaoEncontradaException
 import com.mongodb.DBObject
 import com.mongodb.MongoTimeoutException
 import org.apache.camel.LoggingLevel
