@@ -4,6 +4,7 @@ import com.mongodb.Mongo
 import com.mongodb.MongoClient
 import com.mysql.cj.jdbc.MysqlConnectionPoolDataSource
 import org.apache.camel.builder.DeadLetterChannelBuilder
+import org.apache.camel.component.rabbitmq.ArgsConfigurer
 import org.springframework.boot.context.properties.ConfigurationProperties
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
@@ -53,4 +54,15 @@ class BeansConfig {
     Map rabbitConfig(){
         [:]
     }
+
+    @Bean
+    ArgsConfigurer queueArgs(){
+        new ArgsConfigurer() {
+            @Override
+            void configurArgs(Map<String, Object> args) {
+                args['x-max-priority'] = 10
+            }
+        }
+    }
+
 }

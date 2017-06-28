@@ -28,7 +28,7 @@ class GatewayRoute extends RouteBuilder {
         from("rabbitmq://${rcfg.url}/${rcfg.exchange}?queue=${rcfg.queue}&deadLetterExchange=${rcfg['exchange-dlq']}" +
                 "&deadLetterQueue=${rcfg.deadLetterQueue}&deadLetterRoutingKey=dead.letters&autoAck=false&" +
                 "autoDelete=false&concurrentConsumers=${rcfg.concurrentConsumers}&username=${rcfg.username}" +
-                "&password=${rcfg.password}").
+                "&password=${rcfg.password}&queueArgsConfigurer=#queueArgs").
             setProperty('payloadBackup',simple('${body}')).
             unmarshal().string().
             convertBodyTo(Map).

@@ -27,7 +27,7 @@ class FallbackRoute extends RouteBuilder {
             delay(rcfg['fallback-delay'] as Integer).
             to("rabbitmq://${rcfg.url}/${rcfg.exchange}?queue=${rcfg.queue}&durable=true&autoDelete=false&" +
                     "username=${rcfg.username}&password=${rcfg.password}&deadLetterExchange=${rcfg['exchange-dlq']}&" +
-                    "deadLetterQueue=${rcfg.deadLetterQueue}&deadLetterRoutingKey=dead.letters").
+                    "deadLetterQueue=${rcfg.deadLetterQueue}&deadLetterRoutingKey=dead.letters&queueArgsConfigurer=#queueArgs").
         end()
 
 

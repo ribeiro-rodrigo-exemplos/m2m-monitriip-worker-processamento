@@ -29,13 +29,13 @@ databases:
     database: test
 
 rabbitmq:
-  url: rabbit-hml
+  url: localhost
   exchange: processador.monitriip
   queue: eventos.monitriip
   exchange-dlq: processador.monitriip.DLQ
   deadLetterQueue: eventos.monitriip.DLQ
-  username: admin
-  password: admin
+  username: guest
+  password: guest
   fallback-delay: 5000
   concurrentConsumers: 10
 
