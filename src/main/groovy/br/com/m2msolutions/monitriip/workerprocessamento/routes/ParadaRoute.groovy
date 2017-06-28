@@ -3,6 +3,7 @@ package br.com.m2msolutions.monitriip.workerprocessamento.routes
 import br.com.m2msolutions.monitriip.workerprocessamento.enums.MotivoParada
 import br.com.m2msolutions.monitriip.workerprocessamento.exceptions.ViagemNaoEncontradaException
 import com.mongodb.DBObject
+import com.mongodb.MongoTimeoutException
 import org.apache.camel.LoggingLevel
 import org.apache.camel.builder.RouteBuilder
 import org.springframework.beans.factory.annotation.Autowired
@@ -21,6 +22,13 @@ class ParadaRoute extends RouteBuilder {
 
     @Override
     void configure() throws Exception {
+
+        onException(MongoTimeoutException).
+            log(LoggingLevel.WARN,"${this.class.simpleName}",'${exception.message} - id: ${id}').
+            logExhaustedMessageHistory(false).
+            maximumRedeliveries(10).
+            redeliveryDelay(10000).
+        end()
 
         from('direct:parada-route').
             routeId('parada-route').

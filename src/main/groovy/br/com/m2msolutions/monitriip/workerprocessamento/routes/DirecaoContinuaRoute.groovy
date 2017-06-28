@@ -1,7 +1,7 @@
 package br.com.m2msolutions.monitriip.workerprocessamento.routes
 
-import br.com.m2msolutions.monitriip.workerprocessamento.exceptions.ViagemNaoEncontradaException
 import com.mongodb.DBObject
+import com.mongodb.MongoTimeoutException
 import org.apache.camel.LoggingLevel
 import org.apache.camel.builder.RouteBuilder
 import org.apache.camel.component.mongodb.MongoDbConstants
@@ -21,6 +21,13 @@ class DirecaoContinuaRoute extends RouteBuilder {
 
     @Override
     void configure() throws Exception {
+
+        onException(MongoTimeoutException).
+            log(LoggingLevel.WARN,"${this.class.simpleName}",'${exception.message} - id: ${id}').
+            logExhaustedMessageHistory(false).
+            maximumRedeliveries(6).
+            redeliveryDelay(5000).
+        end()
 
         from('direct:direcao-continua-route').
             routeId('direcao-continua-route').

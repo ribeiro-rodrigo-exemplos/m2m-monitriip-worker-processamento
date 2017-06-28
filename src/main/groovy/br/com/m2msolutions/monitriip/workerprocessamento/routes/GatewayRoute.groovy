@@ -1,6 +1,7 @@
 package br.com.m2msolutions.monitriip.workerprocessamento.routes
 
 import org.apache.camel.builder.RouteBuilder
+import org.apache.camel.component.direct.DirectConsumerNotAvailableException
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.beans.factory.annotation.Qualifier
 import org.springframework.stereotype.Component
@@ -17,6 +18,12 @@ class GatewayRoute extends RouteBuilder {
 
     @Override
     void configure() throws Exception {
+
+        onException(DirectConsumerNotAvailableException).
+            redeliveryDelay(10000).
+            maximumRedeliveries(3).
+            logExhaustedMessageHistory(false).
+        end()
 
         from("rabbitmq://${rcfg.url}/${rcfg.exchange}?queue=${rcfg.queue}&deadLetterExchange=${rcfg['exchange-dlq']}" +
                 "&deadLetterQueue=${rcfg.deadLetterQueue}&deadLetterRoutingKey=dead.letters&autoAck=false&" +

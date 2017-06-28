@@ -1,21 +1,14 @@
 package br.com.m2msolutions.monitriip.workerprocessamento.routes
 
-import br.com.m2msolutions.monitriip.workerprocessamento.exceptions.JornadaNaoEncontradaException
-import br.com.m2msolutions.monitriip.workerprocessamento.exceptions.ViagemNaoEncontradaException
 import br.com.m2msolutions.monitriip.workerprocessamento.util.DateUtil
 import com.mongodb.DBObject
-import com.mongodb.MongoSocketException
-import com.mongodb.MongoSocketOpenException
 import com.mongodb.MongoTimeoutException
-import com.mongodb.MongoWriteException
 import org.apache.camel.LoggingLevel
 import org.apache.camel.builder.RouteBuilder
-import org.apache.camel.component.mongodb.CamelMongoDbException
 import org.apache.camel.component.mongodb.MongoDbConstants
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.beans.factory.annotation.Qualifier
 import org.springframework.stereotype.Component
-
 /**
  * Created by Rodrigo Ribeiro on 03/04/17.
  */
@@ -36,7 +29,8 @@ class ViagemRoute extends RouteBuilder {
         onException(MongoTimeoutException).
             log(LoggingLevel.WARN,"${this.class.simpleName}",'${exception.message} - id: ${id}').
             logExhaustedMessageHistory(false).
-            maximumRedeliveries(6).
+            maximumRedeliveries(20).
+            redeliveryDelay(15000).
         end()
 
         from('direct:viagem-route').
