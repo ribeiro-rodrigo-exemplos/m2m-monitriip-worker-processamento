@@ -20,7 +20,7 @@ enum TipoViagem {
     }
 
     static TipoViagem obterTipo(cod){
-        return tipos[cod]
+        tipos[cod]
     }
 
 }
