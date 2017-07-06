@@ -22,7 +22,7 @@ class VelocidadeLocalizacaoRoute extends RouteBuilder {
         from('direct:velocidade-localizacao-route').
             routeId('velocidade-localizacao-route').
             filter().
-                expression(simple('${body[idViagem]} != null')).
+                expression(simple('${body[idViagem]} != null and ${body[latitude]} != 0 and ${body[longitude]} != 0')).
             setProperty('originalPayload',simple('${body}')).
             to('velocity:translators/viagem/consultar-periodo.vm').
             setHeader(MongoDbConstants.FIELDS_FILTER,constant("{'localizacaoInicial.coordinates':1}")).
