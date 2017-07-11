@@ -32,7 +32,7 @@ class JornadaRoute extends RouteBuilder {
         from("direct:jornada-route").
             routeId('jornada-route').
             choice().
-                when().expression(simple('${body[tipoRegistroEvento]} == 1')).
+                when().expression(simple('${body[tipoRegistroEvento]} == 1 and ${body[motivo]} == null')).
                     to('direct:abrir-jornada-route').
                 when().expression(simple('${body[tipoRegistroEvento]} == 0')).
                     to('direct:fechar-jornada-route').
