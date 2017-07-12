@@ -22,7 +22,7 @@ class ViagemMessagingMapper implements Processor{
 
         e.setProperty 'tipoViagem',payload['codigoTipoViagem'] != null ? TipoViagem.obterTipo(payload['codigoTipoViagem'] as Integer)
                 : TipoViagem.obterTipo(2)
-        e.setProperty 'sentidoLinha',Sentido.obterSentido(payload['codigoSentidoLinha'] ? payload['codigoSentidoLinha'] : payload['sentidoLinha'])
+        e.setProperty 'sentidoLinha',Sentido.obterSentido(payload['codigoSentidoLinha'])
         e.setProperty 'tipoTransporte',TipoTransporte.obterTipo(payload['idLog'])
     }
 }
