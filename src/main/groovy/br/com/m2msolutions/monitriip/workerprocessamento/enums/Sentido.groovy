@@ -13,7 +13,7 @@ enum Sentido {
         addSentido(this,cod)
     }
 
-    private void addSentido(Sentido sentidoLinha, cod){
+    private void addSentido(Sentido sentidoLinha, def cod){
 
         if(sentidos == null)
             sentidos  = [:]
@@ -21,7 +21,7 @@ enum Sentido {
         sentidos[cod] = sentidoLinha
     }
 
-    static Sentido obterSentido(cod){
+    static Sentido obterSentido(def cod){
         return sentidos[cod]
     }
 }
