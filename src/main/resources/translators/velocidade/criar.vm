@@ -1,29 +1,32 @@
+#set($payload = $exchange.properties.originalPayload)
 [
     {
-        "idViagem":"${exchange.properties.originalPayload.idViagem}",
-        "idJornada":"${exchange.properties.originalPayload.idJornada}"
+        "idViagem":"${payload.idViagem}",
+        "idJornada":"${payload.idJornada}"
     },
     {
         $max:{
             #if ($exchange.properties.distanciaPercorrida)
                 "totalKm":${exchange.properties.distanciaPercorrida},
             #end
-            "velocidadeMaxima":${exchange.properties.originalPayload.velocidadeAtual}
+            "velocidadeMaxima":${payload.velocidadeAtual}
         },
-        $min:{"velocidadeMinima":${exchange.properties.originalPayload.velocidadeAtual}},
+            #if($payload.velocidadeAtual > 0)
+                $min:{"velocidadeMinima":${payload.velocidadeAtual}},
+            #end
         $push:{
             "localizacoes":{
-                "dataHoraLocalizacao":"${exchange.properties.originalPayload.dataHoraEvento}",
-                "velocidade":${exchange.properties.originalPayload.velocidadeAtual},
-                "distanciaPercorrida":${exchange.properties.originalPayload.distanciaPercorrida},
+                "dataHoraLocalizacao":"${payload.dataHoraEvento}",
+                "velocidade":${payload.velocidadeAtual},
+                "distanciaPercorrida":${payload.distanciaPercorrida},
                 "situacaoIgnicaoMotor":"${exchange.properties.situacaoIgnicaoMotor}",
                 "situacaoPortaVeiculo":"${exchange.properties.situacaoPortaVeiculo}",
-                #if ($exchange.properties.originalPayload.latitude and $exchange.properties.originalPayload.longitude)
+                #if ($payload.latitude and $payload.longitude)
                     "localizacao":{
                         "type":"POINT",
                         "coordinates":[
-                            ${exchange.properties.originalPayload.longitude},
-                            ${exchange.properties.originalPayload.latitude}
+                            ${payload.longitude},
+                            ${payload.latitude}
                         ]
                     }
                 #end
