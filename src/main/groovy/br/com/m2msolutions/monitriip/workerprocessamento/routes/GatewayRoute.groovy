@@ -2,6 +2,7 @@ package br.com.m2msolutions.monitriip.workerprocessamento.routes
 
 import org.apache.camel.builder.RouteBuilder
 import org.apache.camel.component.direct.DirectConsumerNotAvailableException
+import org.apache.camel.model.rest.RestBindingMode
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.beans.factory.annotation.Qualifier
 import org.springframework.stereotype.Component
@@ -19,36 +20,27 @@ class GatewayRoute extends RouteBuilder {
     @Override
     void configure() throws Exception {
 
-        onException(DirectConsumerNotAvailableException).
-            redeliveryDelay(10000).
-            maximumRedeliveries(3).
-            logExhaustedMessageHistory(false).
+        restConfiguration().
+                component('jetty').
+                host('localhost').
+                port(8080).
+                bindingMode(RestBindingMode.auto)
+
+        rest('/viagem').
+            put('/{idViagem}/').to('direct:abrir-viagem-route').
+            patch('/{idViagem}').to('direct:fechar-viagem-route')
+
+        rest('/jornada').
+            put('/{idJornada}').to('direct:abrir-jornada-route').
+            patch('/{idJornada}').to('direct:fechar-jornada-route')
+
+
+        from("direct:teste").
+            log('recebeu requisicao').
+            log('${header.idViagem}').
         end()
 
-        from("rabbitmq://${rcfg.url}/${rcfg.exchange}?queue=${rcfg.queue}&deadLetterExchange=${rcfg['exchange-dlq']}" +
-                "&deadLetterQueue=${rcfg.deadLetterQueue}&deadLetterRoutingKey=dead.letters&autoAck=false&" +
-                "autoDelete=false&concurrentConsumers=${rcfg.concurrentConsumers}&username=${rcfg.username}" +
-                "&password=${rcfg.password}&queueArgsConfigurer=#queueArgs").
-            setProperty('payloadBackup',simple('${body}')).
-            unmarshal().string().
-            convertBodyTo(Map).
-            choice().
-                when().expression(simple('${body[idLog]} == 4')).
-                    to('direct:velocidade-localizacao-route').
-                when().expression(simple('${body[idLog]} == 5')).
-                    to('direct:jornada-route').
-                when().expression(simple('${body[idLog]} == 6')).
-                    to('direct:parada-route').
-                when().expression(simple('${body[idLog]} == 7')).
-                    to('direct:viagem-route').
-                when().expression(simple('${body[idLog]} == 8')).
-                    to('direct:viagem-route').
-                when().expression(simple('${body[idLog]} == 9')).
-                    to('direct:bilhete-route').
-                when().expression(simple('${body[idLog]} == 250')).
-                    to('direct:direcao-continua-route').
-            endChoice().
-        end()
+
 
     }
 }

@@ -1,6 +1,7 @@
 package br.com.m2msolutions.monitriip.workerprocessamento.routes
 
 import com.mongodb.DBObject
+import org.apache.camel.Exchange
 import org.apache.camel.builder.RouteBuilder
 import org.apache.camel.component.mongodb.MongoDbConstants
 import org.springframework.beans.factory.annotation.Autowired
