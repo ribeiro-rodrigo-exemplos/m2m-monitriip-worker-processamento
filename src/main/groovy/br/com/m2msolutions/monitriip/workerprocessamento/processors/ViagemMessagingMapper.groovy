@@ -25,6 +25,8 @@ class ViagemMessagingMapper implements Processor{
         e.setProperty 'sentidoLinha',payload['codigoSentidoLinha'] != null ? Sentido.obterSentido(payload['codigoSentidoLinha'])
                 : Sentido.obterSentido(payload['sentidoLinha'])
         e.setProperty 'tipoTransporte',TipoTransporte.obterTipo(payload['idLog'])
+
+        e.setProperty 'dataInicial', DateUtil.formatarData(e.in.body['dataHoraEvento'] as String)
     }
 }
 

@@ -1,7 +1,7 @@
 {
-    "idViagem":"${body.idViagem}",
+    "idViagem":"${headers.idViagem}",
+    "idJornada":"${headers.idJornada}",
     "idCliente" : ${body.idCliente},
-    "idJornada":"${body.idJornada}",
     "imei":"${body.imei}",
     "pdop":"${body.pdop}",
     #if($body.identificacaoLinha)
@@ -10,7 +10,6 @@
         "identificacaoLinha":"${body.autorizacaoViagem}",
     #end
     "cnpjCliente":"${body.cnpjEmpresaTransporte}",
-    "dataInicialViagem":"${exchange.properties.dataInicialViagem}",
     "dataHoraInicial":"${body.dataHoraEvento}",
     "dataInicial":"${exchange.properties.dataInicial}",
     "cpfMotorista":"${body.cpfMotorista}",
@@ -52,18 +51,5 @@
         "DEFEITO_NO_VEICULO":0,
         "TROCA_PROGRAMADA_DE_VEICULO":0,
         "OUTRO":0
-    },
-    "logInfo":{
-        #if($body.codigoTipoViagem)
-            "codigoTipoViagem":${body.codigoTipoViagem},
-        #end
-        #if($body.codigoSentidoLinha)
-            "codigoSentidoLinha":${body.codigoSentidoLinha},
-        #end
-        #if($body.sentidoLinha)
-            "sentidoLinha":"${body.sentidoLinha}",
-        #end
-        "idLog":${body.idLog}
-
     }
 }

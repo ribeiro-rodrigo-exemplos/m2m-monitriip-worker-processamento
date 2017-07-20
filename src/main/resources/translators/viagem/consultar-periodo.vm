@@ -1,4 +1,4 @@
 {
-    "idViagem":"${body.idViagem}",
-    "idJornada":"${body.idJornada}"
+    "idViagem":"${headers.idViagem}",
+    "idJornada":"${headers.idJornada}"
 }

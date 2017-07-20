@@ -1,7 +1,6 @@
 [
     {
-      "idJornada":"${exchange.properties.payload.idJornada}",
-      "placaVeiculo":"${exchange.properties.payload.placaVeiculo}"
+      "idJornada":"${headers.idJornada}",
     },
     {
       "$set":{

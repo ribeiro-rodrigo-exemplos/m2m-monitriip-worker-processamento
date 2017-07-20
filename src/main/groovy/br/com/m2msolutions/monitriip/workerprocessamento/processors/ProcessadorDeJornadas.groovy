@@ -25,13 +25,6 @@ class ProcessadorDeJornadas implements Processor {
         payload['dataInicialViagem'] = viagem['dataInicialViagem']
         payload['identificacaoLinha'] = viagem['identificacaoLinha']
 
-        def logInfo = viagem['logInfo']
-
-        logInfo?.each{
-            key,value ->
-                payload[key] = value
-        }
-
         exchange.in.body = payload
     }
 
