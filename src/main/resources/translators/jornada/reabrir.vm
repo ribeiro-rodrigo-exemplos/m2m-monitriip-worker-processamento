@@ -1,0 +1,15 @@
+[
+    {
+        "idJornada":"${headers.idJornada}",
+    },
+    {
+        "$set":{
+           "dataHoraFinal":null,
+           "dataFinal":null,
+           "duracao":null,
+           "coordenadasFim":null,
+           "horasPorData":null,
+           "aberto":false
+        }
+    }
+]

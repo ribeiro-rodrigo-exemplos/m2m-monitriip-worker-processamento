@@ -52,6 +52,14 @@ class JornadaRoute extends RouteBuilder {
             endChoice().
         end()
 
+        from('direct:reabrir-jornada-route').
+            routeId('reabrir-jornada-route').
+            to('velocity:translators/jornada/reabrir.vm').
+            convertBodyTo(DBObject).
+            to("mongodb:monitriipDb?database=${dbConfig.monitriip.database}&collection=jornada&operation=update").
+            process{it.setProperty 'updated.jornada',it.in.body['matchedCount'] ? true : false}.
+        end()
+
         from('direct:obter-nome-motorista-route').
             routeId('obter-nome-motorista').
             setProperty('payload',simple('${body}')).

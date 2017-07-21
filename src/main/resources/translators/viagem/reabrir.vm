@@ -1,0 +1,15 @@
+[
+    {
+        "idViagem":"${headers.idViagem}",
+        "idJornada":"${headers.idJornada}"
+    },
+    {
+        "$set":{
+            "dataFinal":null,
+            "dataHoraFinal":null,
+            "duracao":null,
+            "aberto":true,
+            "localizacaoFinal":null
+        }
+    }
+]

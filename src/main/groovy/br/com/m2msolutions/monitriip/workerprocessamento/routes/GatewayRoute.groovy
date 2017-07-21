@@ -4,6 +4,7 @@ import org.apache.camel.builder.RouteBuilder
 import org.apache.camel.component.direct.DirectConsumerNotAvailableException
 import org.apache.camel.model.dataformat.JsonLibrary
 import org.apache.camel.model.rest.RestBindingMode
+import org.apache.camel.model.rest.RestParamType
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.beans.factory.annotation.Qualifier
 import org.springframework.beans.factory.annotation.Value
@@ -35,7 +36,11 @@ class GatewayRoute extends RouteBuilder {
             put('/{idViagem}').
                 to('direct:abrir-periodo-viagem-route').
             patch('/{idViagem}').
-                to('direct:fechar-periodo-viagem-route')
+                param().
+                    name('estado').
+                    type(RestParamType.query).
+                endParam().
+                to('direct:alterar-periodo-viagem-route')
 
         rest('/jornadas/{idJornada}/viagens/{idViagem}').
             post('/bilhetes').

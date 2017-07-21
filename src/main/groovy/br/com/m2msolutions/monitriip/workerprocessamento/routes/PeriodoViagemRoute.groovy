@@ -55,6 +55,33 @@ class PeriodoViagemRoute extends RouteBuilder{
                     setBody(constant(null)).
         end()
 
+        from('direct:alterar-periodo-viagem-route').
+            routeId('alterar-periodo-viagem-route').
+            choice().
+                when(header('estado').isEqualToIgnoreCase('aberto')).
+                    to('direct:reabrir-jornada-route').
+                    to('direct:reabrir-periodo-viagem-route').
+                when(header('estado').isEqualToIgnoreCase('fechado')).
+                    to('direct:fechar-jornada-route').
+                    to('direct:fechar-periodo-viagem-route').
+        end()
+
+        from('direct:reabrir-periodo-viagem-route').
+            routeId('reabrir-periodo-viagem-route').
+            to('velocity:translators/viagem/reabrir.vm').
+            convertBodyTo(DBObject).
+            to("mongodb:monitriipDb?database=${dbConfig.monitriip.database}&collection=viagem&operation=update").
+            process{it.setProperty 'updated.periodo',it.in.body['matchedCount'] ? true : false}.
+            process{it.setProperty 'updated', it.getProperty('updated.periodo') && it.getProperty('updated.jornada')}.
+            setBody(constant(null)).
+            choice().
+                when(exchangeProperty('updated').isEqualTo(true))
+                    .setHeader(Exchange.HTTP_RESPONSE_CODE,constant(204)).
+                when(exchangeProperty('updated').isEqualTo(false)).
+                    setHeader(Exchange.HTTP_RESPONSE_CODE,constant(404)).
+            endChoice().
+        end()
+
         from('direct:abrir-viagem-route').
             routeId('abrir-viagem-route').
             process('viagemMessagingMapper').
