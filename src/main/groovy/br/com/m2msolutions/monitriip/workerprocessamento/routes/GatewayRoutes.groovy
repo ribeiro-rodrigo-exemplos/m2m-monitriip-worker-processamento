@@ -14,7 +14,7 @@ import org.springframework.stereotype.Component
  * Created by Rodrigo Ribeiro on 03/04/17.
  */
 @Component
-class GatewayRoute extends RouteBuilder {
+class GatewayRoutes extends RouteBuilder {
 
     @Value('${server.port}')
     Integer serverPort
@@ -29,34 +29,35 @@ class GatewayRoute extends RouteBuilder {
                 bindingMode(RestBindingMode.auto)
 
         rest('/jornadas').
-            put('/{idJornada}').to('direct:abrir-jornada-route').
-            patch('/{idJornada}').to('direct:fechar-jornada-route')
+            put('/{idJornada}').
+                to('direct:abrir-jornada-route').
+            patch('/{idJornada}').
+                to('direct:fechar-jornada-route')
 
-        rest('/jornadas/{idJornada}/viagens').
-            put('/{idViagem}').
+        rest('/viagens/{idViagem}').
+            put().
+                to('direct:abrir-viagem-route').
+            patch().
+                to('direct:fechar-viagem-route')
+
+        rest('/viagens/{idViagem}/jornadas').
+            put('/{idJornada}').
                 to('direct:abrir-periodo-viagem-route').
-            patch('/{idViagem}').
+            patch('/{idJornada}').
                 param().
                     name('estado').
                     type(RestParamType.query).
                 endParam().
-                to('direct:alterar-periodo-viagem-route')
+                    to('direct:alterar-periodo-viagem-route')
 
-        rest('/jornadas/{idJornada}/viagens/{idViagem}').
+        rest('/viagens/{idViagem}/jornadas/{idJornada}').
             post('/bilhetes').
                 to('direct:bilhete-route').
             post('/paradas').
-                to('direct:paradas-route').
+                to('direct:parada-route').
             post('/velocidade').
-                to('direct:velocidade-route').
+                to('direct:velocidade-localizacao-route').
             put('/direcao').
                 to('direct:direcao-continua-route')
-
-        from("direct:convert-data-route").
-            convertBodyTo(Map).
-        end()
-
-
-
     }
 }

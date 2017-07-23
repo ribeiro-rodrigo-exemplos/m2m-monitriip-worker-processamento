@@ -14,7 +14,7 @@ import org.springframework.stereotype.Component
  * Created by Rodrigo Ribeiro on 03/04/17.
  */
 @Component
-class JornadaRoute extends RouteBuilder {
+class JornadaRoutes extends RouteBuilder {
 
     @Autowired
     @Qualifier('dbConfig')
@@ -93,6 +93,12 @@ class JornadaRoute extends RouteBuilder {
                     setHeader(Exchange.HTTP_RESPONSE_CODE,constant(404)).
                     setBody(constant(null)).
             endChoice().
+        end()
+
+        from('direct:consultar-jornada-route').
+            routeId('consultar-jornada-route').
+            to('velocity:translators/jornada/consultar-jornada.vm').
+            to("mongodb:monitriipDb?database=${dbConfig.monitriip.database}&collection=jornada&operation=findOneByQuery").
         end()
     }
 }

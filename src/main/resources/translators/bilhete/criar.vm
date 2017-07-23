@@ -2,8 +2,8 @@
 #set($count = $body.bilhetes.size() - 1)
 [
     {
-        "idViagem":"${body.idViagem}",
-        "idJornada":"${body.idJornada}"
+        "idViagem":"${headers.idViagem}",
+        "idJornada":"${headers.idJornada}"
     },
     {
         "$inc":{
@@ -14,8 +14,8 @@
                 "$each":[
                     #foreach($bilhete in $bilhetes)
                         {
-                            "idViagem":"${body.idViagem}",
-                            "idJornada":"${body.idJornada}",
+                            "idViagem":"${headers.idViagem}",
+                            "idJornada":"${headers.idJornada}",
                             "idCliente":"${body.idCliente}",
                             "dataHoraEvento":"${body.dataHoraEvento}",
                             "dataHoraAberturaPorta":"${body.dataHoraAberturaPorta}",

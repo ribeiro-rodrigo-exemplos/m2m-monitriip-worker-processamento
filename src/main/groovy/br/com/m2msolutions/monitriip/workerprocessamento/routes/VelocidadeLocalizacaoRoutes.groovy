@@ -11,7 +11,7 @@ import org.springframework.stereotype.Component
  * Created by Rodrigo Ribeiro on 08/04/17.
  */
 @Component
-class VelocidadeLocalizacaoRoute extends RouteBuilder {
+class VelocidadeLocalizacaoRoutes extends RouteBuilder {
 
     @Autowired
     @Qualifier('dbConfig')
@@ -22,20 +22,23 @@ class VelocidadeLocalizacaoRoute extends RouteBuilder {
 
         from('direct:velocidade-localizacao-route').
             routeId('velocidade-localizacao-route').
-            filter().
-                expression(simple('${body[idViagem]} != null and ${body[latitude]} != 0 and ${body[longitude]} != 0')).
-            setProperty('originalPayload',simple('${body}')).
+            convertBodyTo(Map).
+            setProperty('originalPayload',body()).
             to('velocity:translators/viagem/consultar-periodo.vm').
             setHeader(MongoDbConstants.FIELDS_FILTER,constant("{'localizacaoInicial.coordinates':1}")).
             to("mongodb:monitriipDb?database=${dbConfig.monitriip.database}&collection=viagem&operation=findOneByQuery").
-            filter().
-                expression(simple('${body} != null')).
+            choice().
+                when(body().isNull()).
+                    setBody(constant(null)).
+                    setHeader(Exchange.HTTP_RESPONSE_CODE,constant(404)).
+                when(body().isNotNull()).
                     process('processadorDeDistancias').
                     process('velocidadeLocalizacaoMessagingMapper').
                     to('velocity:translators/velocidade/criar.vm').
                     convertBodyTo(DBObject).
                     to("mongodb:monitriipDb?database=${dbConfig.monitriip.database}&collection=viagem&operation=update").
+                    setBody(constant(null)).
+                    setHeader(Exchange.HTTP_RESPONSE_CODE,constant(204)).
         end()
-
     }
 }

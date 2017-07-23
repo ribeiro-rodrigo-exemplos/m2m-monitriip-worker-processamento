@@ -21,8 +21,10 @@ class ProcessadorDeDistancias implements Processor {
         def latitudeAtual = e.getProperty('originalPayload')['latitude'] as Double
         def longitudeAtual = e.getProperty('originalPayload')['longitude'] as Double
 
-        def distancia = DistanceCalculator.distance latitudeAtual,longitudeAtual,latitudeInicial,longitudeInicial,'K'
-        e.setProperty 'distanciaPercorrida',distancia
+        if(latitudeAtual && longitudeAtual){
+            def distancia = DistanceCalculator.distance latitudeAtual,longitudeAtual,latitudeInicial,longitudeInicial,'K'
+            e.setProperty 'distanciaPercorrida',distancia
+        }
     }
 
     private existeLocalizacoesInicialEFinal(e){

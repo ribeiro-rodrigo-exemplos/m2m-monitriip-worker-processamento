@@ -1,8 +1,8 @@
 #set($payload = $exchange.properties.originalPayload)
 [
     {
-        "idViagem":"${payload.idViagem}",
-        "idJornada":"${payload.idJornada}"
+        "idViagem":"${headers.idViagem}",
+        "idJornada":"${headers.idJornada}"
     },
     {
         $max:{

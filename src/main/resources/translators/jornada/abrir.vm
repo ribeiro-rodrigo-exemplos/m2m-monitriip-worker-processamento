@@ -1,10 +1,11 @@
 {
-    "_id":"${body.idJornada}",
-    "idJornada":"${body.idJornada}",
+    "_id":"${headers.idJornada}",
+    "idJornada":"${headers.idJornada}",
     "idCliente" : ${body.idCliente},
     "dataHoraInicial":"${body.dataHoraEvento}",
     "dataInicial":"${exchange.properties.dataInicial}",
     "cnpjCliente":"${body.cnpjEmpresaTransporte}",
+    "imei":"${body.imei}",
     #if ($body.latitude and $body.longitude)
         "coordenadasInicio":{
             "type":"Point",

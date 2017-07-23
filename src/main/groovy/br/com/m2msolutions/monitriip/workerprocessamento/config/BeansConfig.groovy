@@ -36,33 +36,8 @@ class BeansConfig {
     }
 
     @Bean
-    DeadLetterChannelBuilder globalDeadLetterChannel(){
-        def builder = new DeadLetterChannelBuilder()
-        builder.deadLetterUri = 'file:error'
-        builder.useOriginalMessage()
-        builder
-    }
-
-    @Bean
     @ConfigurationProperties('databases')
     Map dbConfig(){
         [:]
     }
-
-    @Bean
-    @ConfigurationProperties('rabbitmq')
-    Map rabbitConfig(){
-        [:]
-    }
-
-    @Bean
-    ArgsConfigurer queueArgs(){
-        new ArgsConfigurer() {
-            @Override
-            void configurArgs(Map<String, Object> args) {
-                args['x-max-priority'] = 10
-            }
-        }
-    }
-
 }

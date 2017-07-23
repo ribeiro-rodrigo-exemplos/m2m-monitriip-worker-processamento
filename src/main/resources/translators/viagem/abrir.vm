@@ -1,19 +1,24 @@
+#set($jornada = $exchange.properties.jornada)
 {
     "idViagem":"${headers.idViagem}",
     "idJornada":"${headers.idJornada}",
-    "idCliente" : ${body.idCliente},
-    "imei":"${body.imei}",
+    "idCliente" : ${jornada.idCliente},
+    #if($jornada.imei)
+        "imei":"${jornada.imei}",
+    #else
+        "imei":"${body.imei}",
+    #end
     "pdop":"${body.pdop}",
     #if($body.identificacaoLinha)
         "identificacaoLinha":"${body.identificacaoLinha}",
     #else
         "identificacaoLinha":"${body.autorizacaoViagem}",
     #end
-    "cnpjCliente":"${body.cnpjEmpresaTransporte}",
+    "cnpjCliente":"${jornada.cnpjCliente}",
     "dataHoraInicial":"${body.dataHoraEvento}",
     "dataInicial":"${exchange.properties.dataInicial}",
-    "cpfMotorista":"${body.cpfMotorista}",
-    "placaVeiculo":"${body.placaVeiculo}",
+    "cpfMotorista":"${jornada.cpfMotorista}",
+    "placaVeiculo":"${jornada.placaVeiculo}",
     "tipoViagem":"${exchange.properties.tipoViagem}",
     "tipoTransporte":"${exchange.properties.tipoTransporte}",
     "sentidoLinha":"${exchange.properties.sentidoLinha}",
@@ -33,7 +38,7 @@
     "velocidadeMinima":{"$maxKey":1},
     "direcaoContinua":{
         tempoMaximo: 0,
-        cpfMotorista: "${body.cpfMotorista}"
+        cpfMotorista: "${jornada.cpfMotorista}"
     },
     "paradas":[],
     "bilhetes":[],

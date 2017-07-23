@@ -25,22 +25,11 @@ databases:
     user: frota
     password: frota
     port: 3306
-    database: frota_znh
+    database: frota_zn4
   monitriip:
     host: localhost
     port: 27017
-    database: test
-
-rabbitmq:
-  url: localhost
-  exchange: processador.monitriip
-  queue: eventos.monitriip
-  exchange-dlq: processador.monitriip.DLQ
-  deadLetterQueue: eventos.monitriip.DLQ
-  username: guest
-  password: guest
-  fallback-delay: 5000
-  concurrentConsumers: 10
+    database: monitriip
 
 logging:
   file: /var/log/m2m-monitriip-worker-processamento.log
