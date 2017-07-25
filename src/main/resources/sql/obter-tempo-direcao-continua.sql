@@ -1,2 +1,2 @@
-select id_cliente,tempo as tempo from direcao_continua
-  where id_cliente=:#${property.originalPayload[idCliente]} order by id desc limit 1;
+select id_cliente,nu_max_minutos as tempo from direcao_continua
+  where id_cliente=:#${property.originalPayload[idCliente]} order by id_direcao_continua desc limit 1;
