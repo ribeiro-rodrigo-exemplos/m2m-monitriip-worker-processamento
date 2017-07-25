@@ -55,7 +55,7 @@ class GatewayRoutes extends RouteBuilder {
                 to('direct:bilhete-route').
             post('/paradas').
                 to('direct:parada-route').
-            post('/velocidades').
+            post('/localizacoes').
                 to('direct:velocidade-localizacao-route').
             put('/direcoes').
                 to('direct:direcao-continua-route')
