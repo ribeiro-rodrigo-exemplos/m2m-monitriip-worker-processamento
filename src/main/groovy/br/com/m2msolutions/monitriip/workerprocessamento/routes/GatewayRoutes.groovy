@@ -18,6 +18,8 @@ class GatewayRoutes extends RouteBuilder {
 
     @Value('${server.port}')
     Integer serverPort
+    @Value('${server.max-threads}')
+    Integer maxThreads
 
     @Override
     void configure() throws Exception {
@@ -26,7 +28,9 @@ class GatewayRoutes extends RouteBuilder {
             component('jetty').
                 host('0.0.0.0').
                 port(serverPort).
-                bindingMode(RestBindingMode.auto)
+                bindingMode(RestBindingMode.auto).
+                contextPath('/api').
+                endpointProperty('maxThreads',"${maxThreads}")
 
         rest('/jornadas').
             put('/{idJornada}').

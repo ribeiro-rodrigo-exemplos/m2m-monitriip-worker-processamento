@@ -12,6 +12,7 @@ camel:
 
 server:
   port: 8080
+  max-threads: 100
 
 databases:
   sso:
