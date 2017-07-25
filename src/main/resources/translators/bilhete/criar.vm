@@ -24,10 +24,10 @@
                             "identificacaoLinha":"${bilhete.identificacaoLinha}",
                             "dataPrevistaViagem":"${bilhete.dataPrevistaViagem}",
                             "horaPrevistaViagem":"${bilhete.horaPrevistaViagem}",
-                            "codigoDesconto":0,
-                            "valorTarifa":0,
-                            "percentualDesconto":0,
-                            "celularPassageiro":"",
+                            "codigoDesconto":#if($bilhete.codigoDesconto) ${bilhete.valorTarifa} #else 0 #end,
+                            "valorTarifa":#if($bilhete.valorTarifa) ${bilhete.valorTarifa} #else 0 #end,
+                            "percentualDesconto":#if($bilhete.percentualDesconto) ${bilhete.percentualDesconto} #else 0 #end,
+                            "celularPassageiro": #if($bilhete.celularPassageiro) "${bilhete.celularPassageiro}" #else "" #end,
                             #if ($body.latitude and $body.longitude)
                                 "localizacao":{
                                     "type":"POINT",
