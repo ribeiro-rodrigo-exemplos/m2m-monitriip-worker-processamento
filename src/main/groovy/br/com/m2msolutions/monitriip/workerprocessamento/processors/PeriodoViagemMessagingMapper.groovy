@@ -19,6 +19,7 @@ class PeriodoViagemMessagingMapper implements Processor {
         def payload = e.getProperty 'payload'
 
         e.setProperty 'dataInicial',DateUtil.formatarData(payload['dataHoraEvento'] as String)
+        e.setProperty 'dataInicialViagem', viagem['dataInicialViagem']
         e.setProperty 'tipoViagem',viagem['tipoViagem']
         e.setProperty 'tipoTransporte',viagem['tipoTransporte']
         e.setProperty 'sentidoLinha',viagem['sentidoLinha']

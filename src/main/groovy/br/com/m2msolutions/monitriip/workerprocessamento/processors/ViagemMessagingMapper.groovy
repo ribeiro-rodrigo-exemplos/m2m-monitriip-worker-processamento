@@ -27,6 +27,8 @@ class ViagemMessagingMapper implements Processor{
         e.setProperty 'tipoTransporte',TipoTransporte.obterTipo(payload['idLog'])
 
         e.setProperty 'dataInicial', DateUtil.formatarData(e.in.body['dataHoraEvento'] as String)
+
+        e.setProperty 'dataInicialViagem', e.getProperty('dataInicial')
     }
 }
 

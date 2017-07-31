@@ -1,4 +1,5 @@
 #set($jornada = $exchange.properties.jornada)
+#set($dataInicialViagem = $exchange.properties.dataInicialViagem)
 {
     "idViagem":"${headers.idViagem}",
     "idJornada":"${headers.idJornada}",
@@ -16,6 +17,7 @@
     #end
     "cnpjCliente":"${jornada.cnpjCliente}",
     "dataHoraInicial":"${body.dataHoraEvento}",
+    "dataInicialViagem":"${dataInicialViagem}",
     "dataInicial":"${exchange.properties.dataInicial}",
     "cpfMotorista":"${jornada.cpfMotorista}",
     "placaVeiculo":"${jornada.placaVeiculo}",
