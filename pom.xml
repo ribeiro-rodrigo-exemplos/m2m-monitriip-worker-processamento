@@ -5,7 +5,7 @@
 
 	<groupId>br.com.m2msolutions.monitriip.workerprocessamento</groupId>
 	<artifactId>m2m-monitriip-worker-processamento</artifactId>
-	<version>1.1.1</version>
+	<version>2.0.0</version>
 	<packaging>jar</packaging>
 
 	<name>m2m-monitriip-worker-processamento</name>
