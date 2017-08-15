@@ -24,7 +24,7 @@
                             "identificacaoLinha":"${bilhete.identificacaoLinha}",
                             "dataPrevistaViagem":"${bilhete.dataPrevistaViagem}",
                             "horaPrevistaViagem":"${bilhete.horaPrevistaViagem}",
-                            "codigoDesconto":#if($bilhete.codigoDesconto) ${bilhete.valorTarifa} #else 0 #end,
+                            "codigoDesconto":#if($bilhete.codigoDesconto) ${bilhete.codigoDesconto} #else 0 #end,
                             "valorTarifa":#if($bilhete.valorTarifa) ${bilhete.valorTarifa} #else 0 #end,
                             "percentualDesconto":#if($bilhete.percentualDesconto) ${bilhete.percentualDesconto} #else 0 #end,
                             "celularPassageiro": #if($bilhete.celularPassageiro) "${bilhete.celularPassageiro}" #else "" #end,
